@@ -7,6 +7,10 @@ before_install:
 jobs:
   include:
     - stage: test
-      name: "Test with code coverage and Quality"
+      name: "Test with Quality"
       script:
         - mvn clean test
+    - stage: coverage
+      name: "Code coverage"
+      script:
+        - bash <(curl -s https://codecov.io/bash)
