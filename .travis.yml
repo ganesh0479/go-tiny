@@ -1,0 +1,12 @@
+language: java
+before_install:
+  - wget "https://api.adoptopenjdk.net/v3/binary/latest/14/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?project=jdk" -O ${TRAVIS_HOME}/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
+  - tar xvzf ${TRAVIS_HOME}/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
+  - export JAVA_HOME=jdk-14.0.2+12
+  - export PATH=$JAVA_HOME/bin:$PATH
+jobs:
+  include:
+    - stage: test
+      name: "Test with code coverage and Quality"
+      script:
+        - mvn clean test
