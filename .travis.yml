@@ -6,11 +6,12 @@ before_install:
   - export PATH=$JAVA_HOME/bin:$PATH
 jobs:
   include:
-    - stage: test
-      name: "Test with Quality"
+    - stage: Build
+      name: "Building Go Tiny"
+      script:
+        - mvn clean compile
+    - stage: Test
+      name: "Testing Go Tiny with code quality and coverage"
       script:
         - mvn clean test
-    - stage: coverage
-      name: "Code coverage"
-      script:
         - bash <(curl -s https://codecov.io/bash)
