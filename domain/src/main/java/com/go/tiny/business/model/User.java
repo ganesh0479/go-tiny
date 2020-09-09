@@ -1,4 +1,4 @@
-package com.go.tiny.domain.model;
+package com.go.tiny.business.model;
 
 import java.time.LocalDate;
 import java.util.Objects;

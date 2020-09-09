@@ -1,10 +1,10 @@
-package com.go.tiny.domain.port;
+package com.go.tiny.business.port;
 
-import com.go.tiny.domain.model.Card;
+import com.go.tiny.business.model.Card;
 
 import java.util.List;
 
-public interface ObtainCard {
+public interface RequestCard {
   Card create(final Card card);
 
   void update(final Card card);

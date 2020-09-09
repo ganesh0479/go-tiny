@@ -1,9 +1,9 @@
-package com.go.tiny.domain.port;
+package com.go.tiny.business.port;
 
-import com.go.tiny.domain.model.Group;
+import com.go.tiny.business.model.Group;
 
-public interface RequestGroup {
-  void create(Group group);
+public interface ObtainGroup {
+  void create(final Group group);
 
   void authorizeCardToDisplayInGroup(final String groupName, final String cardName);
 

@@ -1,6 +1,6 @@
-package com.go.tiny.domain.port;
+package com.go.tiny.business.port;
 
-import com.go.tiny.domain.model.UserGroupRole;
+import com.go.tiny.business.model.UserGroupRole;
 
 public interface ObtainUserGroupRole {
   void updateUserGroupRole(final UserGroupRole userGroupRole);

@@ -1,6 +1,6 @@
-package com.go.tiny.domain.helper;
+package com.go.tiny.business.helper;
 
-import com.go.tiny.domain.model.User;
+import com.go.tiny.business.model.User;
 
 public enum UserHelper {
   USER_HELPER;

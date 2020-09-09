@@ -1,4 +1,4 @@
-package com.go.tiny.domain.model;
+package com.go.tiny.business.model;
 
 public record Card(String title, String description, String name, String actualUrl, Integer expiresIn, String createdBy, String tinyUrl) {
     public static String UNKNOWN;

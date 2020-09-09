@@ -1,6 +1,6 @@
-package com.go.tiny.domain.model;
+package com.go.tiny.business.model;
 
-import com.go.tiny.domain.constant.Role;
+import com.go.tiny.business.constant.Role;
 
 public record UserGroupRole(String groupName, Role role, String userName, String addedBy) {
 }

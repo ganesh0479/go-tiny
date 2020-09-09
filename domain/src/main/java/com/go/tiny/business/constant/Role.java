@@ -1,4 +1,4 @@
-package com.go.tiny.domain.constant;
+package com.go.tiny.business.constant;
 
 public enum Role {
   ADMIN("ADMIN"),

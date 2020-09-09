@@ -1,4 +1,4 @@
-package com.go.tiny.domain.model;
+package com.go.tiny.business.model;
 
 import java.util.Objects;
 
