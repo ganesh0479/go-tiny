@@ -11,11 +11,11 @@ jobs:
       script:
         - mvn clean compile
     - stage: Test
-      name: "Testing Go Tiny with code quality"
+      name: "Test and Code Quality of Go Tiny Application"
       script:
         - mvn clean test
     - stage: Coverage
-      name: "Code coverage of Go Tiny Appliation"
+      name: "Code coverage of Go Tiny Application"
       script:
         - mvn clean verify
         - bash <(curl -s https://codecov.io/bash)
