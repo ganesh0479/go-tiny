@@ -25,7 +25,6 @@
     <modules>
         <module>domain</module>
         <module>tiny-coverage</module>
-        <module>go-tiny-service</module>
     </modules>
     <dependencyManagement>
         <dependencies>
