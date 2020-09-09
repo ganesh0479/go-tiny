@@ -39,7 +39,7 @@ public class UserDomainTest {
     UserDomain userDomain = new UserDomain(obtainUser);
     Boolean signedIn = userDomain.signIn(user);
     assertTrue(signedIn);
-    verify(obtainUser).register(user);
+    verify(obtainUser).signIn(user);
   }
 
   private User constructUser() {
