@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
+import static java.lang.Boolean.TRUE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
@@ -34,7 +35,7 @@ public class UserDomainTest {
   @DisplayName("should be able to signIn user with the support of stub")
   void shouldBeAbleToLoginUserWithTheSupportOfStub() {
     User user = constructUser();
-    lenient().doNothing().when(obtainUser).register(user);
+    lenient().when(obtainUser.signIn(user)).thenReturn(TRUE);
     UserDomain userDomain = new UserDomain(obtainUser);
     Boolean signedIn = userDomain.signIn(user);
     assertTrue(signedIn);
