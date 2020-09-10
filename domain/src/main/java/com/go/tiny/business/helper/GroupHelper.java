@@ -1,8 +1,10 @@
 package com.go.tiny.business.helper;
 
+import com.go.tiny.business.exception.GoTinyDomainException;
 import com.go.tiny.business.model.Group;
 import com.go.tiny.business.port.ObtainGroup;
 
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.GROUP_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static java.util.Objects.isNull;
 
 public enum GroupHelper {
@@ -15,21 +17,21 @@ public enum GroupHelper {
 
   public void create(final Group group) {
     if (isPortNotAvailable()) {
-      throw new NullPointerException();
+      throw new GoTinyDomainException(GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
     obtainGroup.create(group);
   }
 
   public void authorizeCardToDisplayInGroup(final String groupName, final String cardName) {
     if (isPortNotAvailable()) {
-      throw new NullPointerException();
+      throw new GoTinyDomainException(GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
     obtainGroup.authorizeCardToDisplayInGroup(groupName, cardName);
   }
 
   public void approveCardChangesInTheGroup(final String groupName, final String cardName) {
     if (isPortNotAvailable()) {
-      throw new NullPointerException();
+      throw new GoTinyDomainException(GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
     obtainGroup.approveCardChangesInTheGroup(groupName, cardName);
   }

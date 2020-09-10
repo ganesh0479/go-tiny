@@ -1,6 +1,7 @@
 package com.go.tiny.business;
 
 import com.go.tiny.business.domain.UserDomain;
+import com.go.tiny.business.exception.GoTinyDomainException;
 import com.go.tiny.business.model.User;
 import com.go.tiny.business.port.ObtainUser;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.USER_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static java.lang.Boolean.TRUE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,7 +52,10 @@ public class UserDomainTest {
       shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhenRegisteringUserWithTheSupportOfStub() {
     User user = constructUser();
     UserDomain userDomain = new UserDomain(null);
-    assertThrows(NullPointerException.class, () -> userDomain.register(user));
+    assertThrows(
+        GoTinyDomainException.class,
+        () -> userDomain.register(user),
+        USER_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -59,7 +64,10 @@ public class UserDomainTest {
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileUserSignInWithTheSupportOfStub() {
     User user = constructUser();
     UserDomain userDomain = new UserDomain(null);
-    assertThrows(NullPointerException.class, () -> userDomain.signIn(user));
+    assertThrows(
+        GoTinyDomainException.class,
+        () -> userDomain.signIn(user),
+        USER_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   private User constructUser() {

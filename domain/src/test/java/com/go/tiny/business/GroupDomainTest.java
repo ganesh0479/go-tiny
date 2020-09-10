@@ -1,6 +1,7 @@
 package com.go.tiny.business;
 
 import com.go.tiny.business.domain.GroupDomain;
+import com.go.tiny.business.exception.GoTinyDomainException;
 import com.go.tiny.business.model.Group;
 import com.go.tiny.business.port.ObtainGroup;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.GROUP_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
@@ -34,7 +36,8 @@ public class GroupDomainTest {
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileCreatingGroup() {
     Group group = constructGroup();
     GroupDomain groupDomain = new GroupDomain(null);
-    assertThrows(NullPointerException.class, () -> groupDomain.create(group));
+    assertThrows(
+        GoTinyDomainException.class, () -> groupDomain.create(group), GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -52,8 +55,9 @@ public class GroupDomainTest {
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileAuthorizingCardInGroup() {
     GroupDomain groupDomain = new GroupDomain(null);
     assertThrows(
-        NullPointerException.class,
-        () -> groupDomain.authorizeCardToDisplayInGroup(groupName, cardName));
+        GoTinyDomainException.class,
+        () -> groupDomain.authorizeCardToDisplayInGroup(groupName, cardName),
+            GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -71,8 +75,9 @@ public class GroupDomainTest {
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileApproveCardInGroup() {
     GroupDomain groupDomain = new GroupDomain(null);
     assertThrows(
-        NullPointerException.class,
-        () -> groupDomain.approveCardChangesInTheGroup(groupName, cardName));
+        GoTinyDomainException.class,
+        () -> groupDomain.approveCardChangesInTheGroup(groupName, cardName),
+            GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   private Group constructGroup() {

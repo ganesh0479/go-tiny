@@ -1,8 +1,10 @@
 package com.go.tiny.business.helper;
 
+import com.go.tiny.business.exception.GoTinyDomainException;
 import com.go.tiny.business.model.CardGroup;
 import com.go.tiny.business.port.ObtainCardGroup;
 
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_GROUP_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static java.util.Objects.isNull;
 
 public enum CardGroupHelper {
@@ -15,7 +17,7 @@ public enum CardGroupHelper {
 
   public void add(final CardGroup cardGroup) {
     if (isPortNotAvailable()) {
-      throw new NullPointerException();
+      throw new GoTinyDomainException(CARD_GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
     this.obtainCardGroup.add(cardGroup);
   }
