@@ -7,4 +7,5 @@ public interface GoTinyDomainExceptionMessage {
   String GROUP_RIGHT_SIDE_PORT_UNAVAILABLE = "Group domain right side port is not available";
   String USER_GROUP_ROLE_RIGHT_SIDE_PORT_UNAVAILABLE =
       "User group role domain right side port is not available";
+  String CARD_RIGHT_SIDE_PORT_UNAVAILABLE = "Card domain right side port is not available";
 }

@@ -25,6 +25,7 @@
         <mockito.version>3.3.3</mockito.version>
         <mockito.jupiter.version>3.5.10</mockito.jupiter.version>
         <compile.plugin.version>3.8.1</compile.plugin.version>
+        <assertj.version>3.17.2</assertj.version>
     </properties>
     <modules>
         <module>domain</module>
@@ -111,6 +112,13 @@
                 <artifactId>mockito-junit-jupiter</artifactId>
                 <version>${mockito.jupiter.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <!-- AssertJ Dependencies -->
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <scope>test</scope>
+                <version>${assertj.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
