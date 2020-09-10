@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static java.lang.Boolean.TRUE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
@@ -40,6 +41,25 @@ public class UserDomainTest {
     Boolean signedIn = userDomain.signIn(user);
     assertTrue(signedIn);
     verify(obtainUser).signIn(user);
+  }
+
+  @Test
+  @DisplayName(
+      "should throw an exception if right side port is not available when registering user with the support of stub")
+  void
+      shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhenRegisteringUserWithTheSupportOfStub() {
+    User user = constructUser();
+    UserDomain userDomain = new UserDomain(null);
+    assertThrows(NullPointerException.class, () -> userDomain.register(user));
+  }
+
+  @Test
+  @DisplayName(
+      "should throw an exception if right side port is not available while user sign In with the support of stub")
+  void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileUserSignInWithTheSupportOfStub() {
+    User user = constructUser();
+    UserDomain userDomain = new UserDomain(null);
+    assertThrows(NullPointerException.class, () -> userDomain.signIn(user));
   }
 
   private User constructUser() {
