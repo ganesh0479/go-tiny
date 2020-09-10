@@ -26,7 +26,7 @@ public class UserGroupRoleDomainTest {
     UserGroupRole userGroupRole = constructUserGroupRole();
     lenient().doNothing().when(obtainUserGroupRole).updateUserGroupRole(userGroupRole);
     UserGroupRoleDomain userGroupRoleDomain = new UserGroupRoleDomain(obtainUserGroupRole);
-    obtainUserGroupRole.updateUserGroupRole(userGroupRole);
+    userGroupRoleDomain.updateUserGroupRole(userGroupRole);
     verify(obtainUserGroupRole).updateUserGroupRole(userGroupRole);
   }
 
