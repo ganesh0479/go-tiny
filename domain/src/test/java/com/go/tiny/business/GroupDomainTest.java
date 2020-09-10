@@ -61,7 +61,7 @@ public class GroupDomainTest {
   void shouldBeAbleToApproveCardToDisplayInGroupWithTheSupportOfStub() {
     lenient().doNothing().when(obtainGroup).authorizeCardToDisplayInGroup(groupName, cardName);
     GroupDomain groupDomain = new GroupDomain(obtainGroup);
-    groupDomain.authorizeCardToDisplayInGroup(groupName, cardName);
+    groupDomain.approveCardChangesInTheGroup(groupName, cardName);
     verify(obtainGroup).approveCardChangesInTheGroup(groupName, cardName);
   }
 
