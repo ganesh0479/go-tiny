@@ -147,7 +147,7 @@ public class CardDomainTest {
             card.getExpiresIn(),
             card.getCreatedBy(),
             card.getTinyUrl());
-    verify(obtainCard).getCardsBelongToGroup(CARD_NAME);
+    verify(obtainCard).getCardsBelongToGroup(GROUP_NAME);
   }
 
   @Test
