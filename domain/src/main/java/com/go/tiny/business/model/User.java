@@ -1,14 +1,19 @@
 package com.go.tiny.business.model;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public record User(String name, String emailId, String password, LocalDate createdOn) {
-    public User {
-        Objects.requireNonNull(emailId);
-        Objects.requireNonNull(password);
-    }
-    public User(String emailId,String password){
-        this(null,emailId,password,null);
-    }
+import java.time.LocalDate;
+
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+  private String name;
+  private String emailId;
+  private String password;
+  private LocalDate createdOn;
 }

@@ -42,6 +42,10 @@ public class CardGroupDomainTest {
   }
 
   private CardGroup constructCardGroup() {
-    return new CardGroup("TINY_CARD", "TINY_GROUP", "TINY_USER");
+    return CardGroup.builder()
+        .cardName("TINY_CARD")
+        .groupName("TINY_GROUP")
+        .addedBy("TINY_USER")
+        .build();
   }
 }

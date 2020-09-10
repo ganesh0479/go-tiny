@@ -71,6 +71,11 @@ public class UserDomainTest {
   }
 
   private User constructUser() {
-    return new User("TINY USER", "user@tiny.com", "tinypwd@1", LocalDate.of(2020, 10, 9));
+    return User.builder()
+        .name("TINY USER")
+        .emailId("user@tiny.com")
+        .password("tinypwd@1")
+        .createdOn(LocalDate.of(2020, 10, 9))
+        .build();
   }
 }

@@ -16,6 +16,7 @@
         <project.version>0.0.1-SNAPSHOT</project.version>
         <postgresql.version>42.2.14</postgresql.version>
         <lombok.version>1.18.12</lombok.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <jacoco.version>0.8.5</jacoco.version>
         <junit.vintage.version>5.6.2</junit.vintage.version>
         <junit-platform.version>1.6.2</junit-platform.version>
@@ -23,11 +24,19 @@
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <mockito.version>3.3.3</mockito.version>
         <mockito.jupiter.version>3.5.10</mockito.jupiter.version>
+        <compile.plugin.version>3.8.1</compile.plugin.version>
     </properties>
     <modules>
         <module>domain</module>
         <module>tiny-coverage</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+    </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -122,18 +131,23 @@
                 <version>${spring.version}</version>
                 <configuration>
                     <mainClass>com.go.tiny.service.GoTinyServiceApplication</mainClass>
-                    <commandlineArguments>--enable-preview</commandlineArguments>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compile.plugin.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <compilerArgs>
-                        --enable-preview
-                    </compilerArgs>
+                    <release>${java.version}</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.2</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
@@ -153,8 +167,24 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
                 <configuration>
-                    <argLine>${argLine} -Xms256m -Xmx2048m --enable-preview</argLine>
+                    <argLine>${argLine} -Xms256m -Xmx2048m</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.18.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

@@ -1,9 +1,20 @@
 package com.go.tiny.business.model;
 
-public record Card(String title, String description, String name, String actualUrl, Integer expiresIn, String createdBy, String tinyUrl) {
-    public static String UNKNOWN;
-    public static Integer UNKNOWN_INT=null;
-    public Card(String tinyUrl, String name){
-        this(UNKNOWN,UNKNOWN,name,UNKNOWN,UNKNOWN_INT,UNKNOWN,tinyUrl);
-    }
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Card {
+  private String title;
+  private String description;
+  private String name;
+  private String actualUrl;
+  private Integer expiresIn;
+  private String createdBy;
+  private String tinyUrl;
 }

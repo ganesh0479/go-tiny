@@ -1,4 +1,16 @@
 package com.go.tiny.business.model;
 
-public record CardGroup(String cardName,String groupName, String addedBy) {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CardGroup {
+  private String cardName;
+  private String groupName;
+  private String addedBy;
 }

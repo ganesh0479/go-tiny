@@ -43,6 +43,11 @@ public class UserGroupRoleDomainTest {
   }
 
   private UserGroupRole constructUserGroupRole() {
-    return new UserGroupRole("TINY-GROUP", ADMIN, "TINY-USER", "TINY-USER");
+    return UserGroupRole.builder()
+        .groupName("TINY-GROUP")
+        .role(ADMIN)
+        .userName("TINY-USER")
+        .addedBy("TINY-USER")
+        .build();
   }
 }

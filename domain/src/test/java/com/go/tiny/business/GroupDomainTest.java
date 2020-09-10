@@ -37,7 +37,9 @@ public class GroupDomainTest {
     Group group = constructGroup();
     GroupDomain groupDomain = new GroupDomain(null);
     assertThrows(
-        GoTinyDomainException.class, () -> groupDomain.create(group), GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
+        GoTinyDomainException.class,
+        () -> groupDomain.create(group),
+        GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -57,7 +59,7 @@ public class GroupDomainTest {
     assertThrows(
         GoTinyDomainException.class,
         () -> groupDomain.authorizeCardToDisplayInGroup(groupName, cardName),
-            GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
+        GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -77,10 +79,10 @@ public class GroupDomainTest {
     assertThrows(
         GoTinyDomainException.class,
         () -> groupDomain.approveCardChangesInTheGroup(groupName, cardName),
-            GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
+        GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   private Group constructGroup() {
-    return new Group("TINY-GROUP", "TINY-USER");
+    return Group.builder().name("TINY-GROUP").createdBy("TINY-USER").build();
   }
 }

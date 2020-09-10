@@ -1,9 +1,15 @@
 package com.go.tiny.business.model;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public record Group(String name, String createdBy) {
-    public Group {
-        Objects.requireNonNull(name);
-    }
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Group {
+  private String name;
+  private String createdBy;
 }
