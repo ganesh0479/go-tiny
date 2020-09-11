@@ -109,7 +109,7 @@ public class CardJpaAdapterTest {
     // When
     obtainCard.update(null);
     // Then
-    assertThat(true);
+    assertThat(cardDao.findAll()).isEmpty();
   }
 
   @Test
@@ -131,7 +131,7 @@ public class CardJpaAdapterTest {
     // When
     obtainCard.delete(null);
     // Then
-    assertThat(true);
+    assertThat(cardDao.findAll()).isEmpty();
   }
 
   @Test
@@ -140,7 +140,7 @@ public class CardJpaAdapterTest {
     // When
     obtainCard.get(null);
     // Then
-    assertThat(true);
+    assertThat(cardDao.findAll()).isEmpty();
   }
 
   @Test
