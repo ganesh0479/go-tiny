@@ -5,20 +5,34 @@ import com.go.tiny.business.model.Card;
 import com.go.tiny.business.port.ObtainCard;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
+import static com.go.tiny.business.constant.GoTinyDomainConstant.*;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
 import static java.util.Objects.isNull;
 
 public enum CardHelper {
   CARD_HELPER;
   private ObtainCard obtainCard;
+  private static final String URL_REGEX =
+      "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$";
+  private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
   public void initialize(ObtainCard obtainCard) {
     this.obtainCard = obtainCard;
   }
 
   public Card create(final Card card) {
-    return null;
+    if (isPortNotAvailable()) {
+      throw new GoTinyDomainException(CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
+    }
+    if (!validateUrl(card.getActualUrl())) {
+      throw new GoTinyDomainException(INVALID_URL);
+    }
+    long uniqueId = obtainCard.getUniqueId();
+    card.setTinyUrl(constructShortUrl(BASE_62, uniqueId));
+    return obtainCard.create(card);
   }
 
   public void update(final Card card) {
@@ -86,5 +100,21 @@ public enum CardHelper {
 
   private Boolean isPortNotAvailable() {
     return isNull(obtainCard);
+  }
+
+  private Boolean validateUrl(final String url) {
+    return URL_PATTERN.matcher(url).matches();
+  }
+
+  public String constructShortUrl(int base, long decimalNumber) {
+    String shortUrl = decimalNumber == ZERO ? ZERO_STR : EMPTY;
+    long mod = ZERO;
+    String baseDigits = BASE_DIGITS;
+    while (decimalNumber != ZERO) {
+      mod = decimalNumber % base;
+      shortUrl = baseDigits.substring((int) mod, (int) mod + ONE) + shortUrl;
+      decimalNumber = decimalNumber / base;
+    }
+    return shortUrl;
   }
 }
