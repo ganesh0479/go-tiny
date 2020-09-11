@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
+import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
@@ -25,7 +26,7 @@ public class CardDomainTest {
   private static final String GROUP_NAME = "GROUP-CARD";
   private static final String APPROVAL_STATUS = "APPROVED";
   private static final String TINY_URL = "http://go-tiny.com/TINY-URL";
-  private static final String ACTUAL_URL = "http://random-url/ahbjkjdjjsggdgjdbnjghjdnn";
+  private static final String ACTUAL_URL = "http://random.com/ahbjkjdjjsggdgjdbnjghjdnn";
 
   @Test
   @DisplayName("should be able to update card with the support of stub")
@@ -86,6 +87,42 @@ public class CardDomainTest {
             card.getCreatedBy(),
             card.getTinyUrl());
     verify(obtainCard).get(CARD_NAME);
+  }
+
+  @Test
+  @DisplayName("should be able to create card with the support of stub")
+  void shouldBeAbleToCreateCardWithTheSupportOfStub() {
+    Card card = constructCard();
+    card.setTinyUrl(null);
+    Card cardWithTinyUrl = constructCard();
+    card.setTinyUrl(TINY_URL);
+    lenient().when(obtainCard.create(card)).thenReturn(cardWithTinyUrl);
+    lenient().when(obtainCard.getUniqueId()).thenReturn(100000L);
+    CardDomain cardDomain = new CardDomain(obtainCard);
+    Card createCardResponse = cardDomain.create(card);
+    assertThat(createCardResponse.getTinyUrl()).matches(TINY_URL);
+    verify(obtainCard).getUniqueId();
+    verify(obtainCard).create(card);
+  }
+
+  @Test
+  @DisplayName("should throw an exception if right side port is not available while creating card")
+  void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileCreatingCard() {
+    Card card = constructCard();
+    CardDomain cardDomain = new CardDomain(null);
+    assertThrows(
+        GoTinyDomainException.class,
+        () -> cardDomain.create(card),
+        CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
+  }
+
+  @Test
+  @DisplayName("should throw an exception if invalid url is given while creating card")
+  void shouldThrowAnExceptionIfInvalidUrlIsGivenWhileCreatingCard() {
+    Card card = constructCard();
+    card.setActualUrl("TINY");
+    CardDomain cardDomain = new CardDomain(obtainCard);
+    assertThrows(GoTinyDomainException.class, () -> cardDomain.create(card), INVALID_URL);
   }
 
   @Test

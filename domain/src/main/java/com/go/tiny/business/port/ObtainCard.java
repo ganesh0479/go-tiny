@@ -24,4 +24,6 @@ public interface ObtainCard {
   String deleteCardInTheGroup(final Card card, final String groupName);
 
   String getActualUrl(final String tinyUrl);
+
+  long getUniqueId();
 }
