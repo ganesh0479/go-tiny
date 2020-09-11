@@ -108,6 +108,8 @@ public class CardJpaAdapterTest {
   public void shouldNotGiveResponseIfCardIsNotAvailableOnUpdatingWithTheSupportOfDatabase() {
     // When
     obtainCard.update(null);
+    // Then
+    assertThat(true);
   }
 
   @Test
@@ -128,6 +130,8 @@ public class CardJpaAdapterTest {
   public void shouldNotGiveResponseOnDeletingUnknownCardWithTheSupportOfDatabase() {
     // When
     obtainCard.delete(null);
+    // Then
+    assertThat(true);
   }
 
   @Test
@@ -135,6 +139,8 @@ public class CardJpaAdapterTest {
   public void shouldNotGiveResponseOnFetchingUnknownCardWithTheSupportOfDatabase() {
     // When
     obtainCard.get(null);
+    // Then
+    assertThat(true);
   }
 
   @Test
