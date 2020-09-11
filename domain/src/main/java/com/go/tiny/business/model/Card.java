@@ -19,4 +19,5 @@ public class Card {
   private Integer expiresIn;
   private String createdBy;
   private String tinyUrl;
+  private byte[] picture;
 }

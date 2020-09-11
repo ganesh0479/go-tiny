@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
+import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
@@ -72,7 +73,7 @@ public class CardDomainTest {
   @DisplayName("should be able to get card with the support of stub")
   void shouldBeAbleToGetCardWithTheSupportOfStub() {
     Card card = constructCard();
-    lenient().when(obtainCard.get(CARD_NAME)).thenReturn(card);
+    lenient().when(obtainCard.get(CARD_NAME)).thenReturn(of(card));
     CardDomain cardDomain = new CardDomain(obtainCard);
     Card responseCard = cardDomain.get(CARD_NAME);
     assertThat(responseCard)
@@ -96,7 +97,7 @@ public class CardDomainTest {
     card.setTinyUrl(null);
     Card cardWithTinyUrl = constructCard();
     card.setTinyUrl(TINY_URL);
-    lenient().when(obtainCard.create(card)).thenReturn(cardWithTinyUrl);
+    lenient().when(obtainCard.create(card)).thenReturn(of(cardWithTinyUrl));
     lenient().when(obtainCard.getUniqueId()).thenReturn(100000L);
     CardDomain cardDomain = new CardDomain(obtainCard);
     Card createCardResponse = cardDomain.create(card);

@@ -3,15 +3,16 @@ package com.go.tiny.business.port;
 import com.go.tiny.business.model.Card;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ObtainCard {
-  Card create(final Card card);
+  Optional<Card> create(final Card card);
 
   void update(final Card card);
 
   void delete(final String name);
 
-  Card get(final String name);
+  Optional<Card> get(final String name);
 
   List<Card> getAll();
 

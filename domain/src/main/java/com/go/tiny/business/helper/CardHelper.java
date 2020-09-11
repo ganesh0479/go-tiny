@@ -7,12 +7,7 @@ import com.go.tiny.business.port.ObtainCard;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ONE;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.BASE_62;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ZERO_STR;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ZERO;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.EMPTY;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.BASE_DIGITS;
+import static com.go.tiny.business.constant.GoTinyDomainConstant.*;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
 import static java.util.Objects.isNull;
@@ -37,7 +32,7 @@ public enum CardHelper {
     }
     long uniqueId = obtainCard.getUniqueId();
     card.setTinyUrl(constructShortUrl(BASE_62, uniqueId));
-    return obtainCard.create(card);
+    return obtainCard.create(card).orElse(null);
   }
 
   public void update(final Card card) {
@@ -58,7 +53,7 @@ public enum CardHelper {
     if (isPortNotAvailable()) {
       throw new GoTinyDomainException(CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
-    return obtainCard.get(name);
+    return obtainCard.get(name).orElse(null);
   }
 
   public List<Card> getAll() {
