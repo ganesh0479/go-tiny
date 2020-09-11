@@ -32,7 +32,6 @@
         <module>domain</module>
         <module>jpa-adapter</module>
         <module>tiny-coverage</module>
-        <module>go-tiny-service</module>
     </modules>
     <dependencies>
         <dependency>
