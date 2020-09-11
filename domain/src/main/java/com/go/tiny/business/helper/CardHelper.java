@@ -106,7 +106,9 @@ public enum CardHelper {
     return URL_PATTERN.matcher(url).matches();
   }
 
-  public String constructShortUrl(int base, long decimalNumber) {
+  public String constructShortUrl(int base62, long uniqueId) {
+    int base = base62;
+    long decimalNumber = uniqueId;
     String shortUrl = decimalNumber == ZERO ? ZERO_STR : EMPTY;
     long mod = ZERO;
     String baseDigits = BASE_DIGITS;
