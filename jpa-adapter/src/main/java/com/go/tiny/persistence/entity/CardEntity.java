@@ -2,12 +2,9 @@ package com.go.tiny.persistence.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "T_CARD")
 public class CardEntity {
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID")
   private Long id;
 
@@ -39,4 +37,6 @@ public class CardEntity {
 
   @Column(name = "TINY_URL")
   private String tinyUrl;
+
+  @Column private byte[] picture;
 }
