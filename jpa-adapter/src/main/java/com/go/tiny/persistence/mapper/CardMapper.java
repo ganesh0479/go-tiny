@@ -44,23 +44,25 @@ public enum CardMapper {
             .build());
   }
 
-  public Optional<CardEntity> constructCardEntityToUpdate(final Card card, CardEntity cardEntity) {
+  public Optional<CardEntity> constructCardEntityToUpdate(
+      final Card card, final CardEntity cardEntity) {
     if (isNull(cardEntity)) {
       return empty();
     }
+    CardEntity updatedCardEntity = cardEntity;
     if (nonNull(card.getTitle())) {
-      cardEntity = cardEntity.toBuilder().title(card.getTitle()).build();
+      updatedCardEntity = updatedCardEntity.toBuilder().title(card.getTitle()).build();
     }
     if (nonNull(card.getDescription())) {
-      cardEntity = cardEntity.toBuilder().description(card.getDescription()).build();
+      updatedCardEntity = updatedCardEntity.toBuilder().description(card.getDescription()).build();
     }
     if (nonNull(card.getActualUrl())) {
-      cardEntity = cardEntity.toBuilder().actualUrl(card.getActualUrl()).build();
+      updatedCardEntity = updatedCardEntity.toBuilder().actualUrl(card.getActualUrl()).build();
     }
     if (nonNull(card.getPicture())) {
-      cardEntity = cardEntity.toBuilder().picture(card.getPicture()).build();
+      updatedCardEntity = updatedCardEntity.toBuilder().picture(card.getPicture()).build();
     }
-    return of(cardEntity);
+    return of(updatedCardEntity);
   }
 
   public List<Card> constructCards(final List<CardEntity> cardEntities) {

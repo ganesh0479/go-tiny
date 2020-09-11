@@ -17,7 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.AUTHORIZED;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.APPROVED;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)

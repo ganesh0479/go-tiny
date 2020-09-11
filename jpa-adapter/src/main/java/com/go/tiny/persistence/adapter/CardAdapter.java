@@ -14,7 +14,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.SEQUENCE_NAME;
+
 import static com.go.tiny.persistence.mapper.CardMapper.CARD_MAPPER;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
