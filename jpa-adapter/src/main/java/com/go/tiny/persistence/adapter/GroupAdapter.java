@@ -10,7 +10,11 @@ import com.go.tiny.persistence.entity.GroupEntity;
 
 import java.util.Optional;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.APPROVED;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.AUTHORIZED;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
+
 import static com.go.tiny.persistence.mapper.GroupMapper.GROUP_MAPPER;
 import static java.util.Objects.isNull;
 
