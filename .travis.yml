@@ -39,5 +39,5 @@ jobs:
         - az login --service-principal -u ${ACR_REGISTRY_USER} -p ${ACR_REGISTRY_PWD} --tenant ${TENANT_ID}
         - az aks get-credentials --resource-group ${AZ_RES_GRP} --name ${AZ_CLSTR}
         - ls -ltr
-        - kubectl --kubeconfig=/home/travis/.kube/config apply --filename=kube/go-tiny-service-cube.yml
+        - kubectl --kubeconfig=/home/travis/.kube/config apply --filename=kube/go-tiny-service-kube.yml
         - kubectl --kubeconfig=/home/travis/.kube/config apply --filename=kube/go-tiny-kube.yml
