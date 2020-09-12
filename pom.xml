@@ -33,6 +33,7 @@
         <module>jpa-adapter</module>
         <module>tiny-coverage</module>
         <module>rest-adapter</module>
+        <module>go-tiny-service</module>
     </modules>
     <dependencies>
         <dependency>
