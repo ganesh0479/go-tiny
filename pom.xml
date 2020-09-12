@@ -53,6 +53,11 @@
                 <artifactId>jpa-adapter</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.go.tiny.rest</groupId>
+                <artifactId>rest-adapter</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
             <!-- Springboot dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
