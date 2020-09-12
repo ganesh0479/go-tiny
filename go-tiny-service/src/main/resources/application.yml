@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://$AZ_DATABASE_NAME:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: $AZ_DATABASE_NAME
+    password: $AZ_POSTGRESQL_PASSWORD
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
