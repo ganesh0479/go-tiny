@@ -299,7 +299,7 @@ public class CardControllerTest {
     String actualUrl = "ACTUAL-URL";
     lenient().when(requestCard.getActualUrl(anyString())).thenReturn(actualUrl);
     // When
-    String baseUrl = "http://localhost:" + randomServerPort + "/groupName/CardName";
+    String baseUrl = "http://localhost:" + randomServerPort + "/go.tiny/groupName/CardName";
     ResponseEntity responseEntity =
         this.testRestTemplate.getForEntity(baseUrl, ResponseEntity.class);
     // Then
