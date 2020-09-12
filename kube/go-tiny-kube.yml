@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-tiny
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: go-tiny
+  template:
+    metadata:
+      labels:
+        app: go-tiny
+    spec:
+      containers:
+        - name: go-tiny
+          image: sivacontainerregistry.azurecr.io/go-tiny-repo/go-tiny:latest
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always

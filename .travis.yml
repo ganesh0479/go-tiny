@@ -1,9 +1,11 @@
 language: java
+services: docker
 before_install:
   - wget "https://api.adoptopenjdk.net/v3/binary/latest/14/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?project=jdk" -O ${TRAVIS_HOME}/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
   - tar xvzf ${TRAVIS_HOME}/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
   - export JAVA_HOME=jdk-14.0.2+12
   - export PATH=$JAVA_HOME/bin:$PATH
+
 jobs:
   include:
     - stage: Build
@@ -19,3 +21,23 @@ jobs:
       script:
         - mvn clean verify
         - bash <(curl -s https://codecov.io/bash)
+    - stage: Deployment
+      name: "Deploying the service to Azure Kubernetes cluster"
+      script:
+        - sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+        - curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+        - echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+        - sudo apt-get update
+        - sudo apt-get install -y kubectl
+        - kubectl version --client
+        - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        - az upgrade
+        - docker build -t go-tiny .
+        - docker login ${ACR_REGISTRY} -u ${ACR_REGISTRY_USER} -p ${ACR_REGISTRY_PWD}
+        - docker tag go-tiny ${ACR_REGISTRY}/go-tiny-repo/go-tiny
+        - docker push ${ACR_REGISTRY}/go-tiny-repo/go-tiny
+        - az login --service-principal -u ${ACR_REGISTRY_USER} -p ${ACR_REGISTRY_PWD} --tenant ${TENANT_ID}
+        - az aks get-credentials --resource-group ${AZ_RES_GRP} --name ${AZ_CLSTR}
+        - ls -ltr
+        - kubectl --kubeconfig=/home/travis/.kube/config apply --filename=kube/go-tiny-service-cube.yml
+        - kubectl --kubeconfig=/home/travis/.kube/config apply --filename=kube/go-tiny-kube.yml
