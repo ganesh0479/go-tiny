@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetCards {
-  List<GetCardResponse> cardResponses;
+  private List<GetCardResponse> cardResponses;
 }

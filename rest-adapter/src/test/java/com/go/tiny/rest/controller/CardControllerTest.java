@@ -40,7 +40,6 @@ public class CardControllerTest {
   @LocalServerPort private int randomServerPort;
   @Autowired private RequestCard requestCard;
   private static final String CARD_NAME = "TINY-CARD";
-  private static final String GROUP_NAME = "GROUP-CARD";
   private static final String APPROVAL_STATUS = "APPROVED";
   private static final String TINY_URL = "http://go-tiny.com/TINY-URL";
   private static final String ACTUAL_URL = "http://random.com/ahbjkjdjjsggdgjdbnjghjdnn";

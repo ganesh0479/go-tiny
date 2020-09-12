@@ -11,12 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 @TestConfiguration
 public class TinyRestTestConfiguration {
 
-  @MockBean RequestUser requestUser;
-  @MockBean
-  RequestUserGroupRole requestUserGroupRole;
-  @MockBean
-  RequestGroup requestGroup;
-  @MockBean
-  RequestCard requestCard;
-  @MockBean RequestCardGroup requestCardGroup;
+  @MockBean private RequestUser requestUser;
+  @MockBean private RequestUserGroupRole requestUserGroupRole;
+  @MockBean private RequestGroup requestGroup;
+  @MockBean private RequestCard requestCard;
+  @MockBean private RequestCardGroup requestCardGroup;
 }

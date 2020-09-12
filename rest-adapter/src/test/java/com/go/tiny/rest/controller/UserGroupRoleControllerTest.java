@@ -58,15 +58,6 @@ public class UserGroupRoleControllerTest {
     return template;
   }
 
-  private UserGroupRole constructUserGroupRole() {
-    return UserGroupRole.builder()
-        .groupName("TINY-GROUP")
-        .role(ADMIN)
-        .userName("TINY-USER")
-        .addedBy("TINY-USER")
-        .build();
-  }
-
   private UserGroupRoleRequest constructUserGroupRoleRequest() {
     return UserGroupRoleRequest.builder()
         .groupName("TINY-GROUP")

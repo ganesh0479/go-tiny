@@ -50,12 +50,4 @@ public class CardGroupControllerTest {
         .addedBy("TINY_USER")
         .build();
   }
-
-  private CardGroup constructCardGroup() {
-    return CardGroup.builder()
-        .cardName("TINY_CARD")
-        .groupName("TINY_GROUP")
-        .addedBy("TINY_USER")
-        .build();
-  }
 }
