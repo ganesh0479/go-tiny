@@ -173,8 +173,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring.version}</version>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
                 <configuration>
-                    <mainClass>com.go.tiny.service.GoTinyServiceApplication</mainClass>
+                    <classifier>spring-boot</classifier>
+                    <mainClass>com.go.tiny.GoTinyServiceApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>
