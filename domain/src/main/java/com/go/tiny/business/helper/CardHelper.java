@@ -65,7 +65,7 @@ public enum CardHelper {
     if (isPortNotAvailable()) {
       throw new GoTinyDomainException(CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
-    return obtainCard.getAll();
+    return obtainCard.getCardsNotBelongToGroup();
   }
 
   public List<Card> getCardsBelongToGroup(final String groupName) {

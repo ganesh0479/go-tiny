@@ -54,7 +54,7 @@ public class CardController {
 
   @GetMapping
   public ResponseEntity<GetCards> getAll() {
-    List<Card> cards = requestCard.getAll();
+    List<Card> cards = requestCard.getCardsNotBelongToGroup();
     return ResponseEntity.ok(CARD_MAPPER.constructGetCards(cards));
   }
 

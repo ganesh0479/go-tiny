@@ -14,7 +14,7 @@ public interface ObtainCard {
 
   Optional<Card> get(final String name);
 
-  List<Card> getAll();
+  List<Card> getCardsNotBelongToGroup();
 
   List<Card> getCardsBelongToGroup(final String groupName);
 

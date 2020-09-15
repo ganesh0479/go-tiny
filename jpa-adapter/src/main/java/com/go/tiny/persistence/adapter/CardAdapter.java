@@ -76,10 +76,18 @@ public class CardAdapter implements ObtainCard {
   }
 
   @Override
-  public List<Card> getAll() {
-    Iterable<CardEntity> cardEntities = cardDao.findAll();
-    return CARD_MAPPER.constructCards(
-        StreamSupport.stream(cardEntities.spliterator(), false).collect(Collectors.toList()));
+  public List<Card> getCardsNotBelongToGroup() {
+    List<CardEntity> cardEntities =
+        StreamSupport.stream(cardDao.findAll().spliterator(), false).collect(Collectors.toList());
+    List<String> cardGroupEntities =
+        StreamSupport.stream(cardGroupDao.findAll().spliterator(), false)
+            .map(CardGroupEntity::getCardName)
+            .collect(Collectors.toList());
+    List<CardEntity> filteredCards =
+        cardEntities.stream()
+            .filter(cardEntity -> !cardGroupEntities.contains(cardEntity.getName()))
+            .collect(Collectors.toList());
+    return CARD_MAPPER.constructCards(filteredCards);
   }
 
   @Override

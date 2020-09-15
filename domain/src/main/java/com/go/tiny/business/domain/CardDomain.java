@@ -40,7 +40,7 @@ public class CardDomain implements RequestCard {
   }
 
   @Override
-  public List<Card> getAll() {
+  public List<Card> getCardsNotBelongToGroup() {
     CARD_HELPER.initialize(obtainCard);
     return CARD_HELPER.getAll();
   }

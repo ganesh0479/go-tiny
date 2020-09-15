@@ -150,7 +150,7 @@ public class CardJpaAdapterTest {
     CardEntity cardEntity = constructCardEntity();
     cardDao.save(cardEntity);
     // When
-    List<Card> cards = obtainCard.getAll();
+    List<Card> cards = obtainCard.getCardsNotBelongToGroup();
     // Then
     assertThat(cards).isNotEmpty();
   }
@@ -159,7 +159,7 @@ public class CardJpaAdapterTest {
   @DisplayName("should be able to get zero cards with the support of database")
   public void shouldBeAbleToGetZeroCardsWithTheSupportOfDatabase() {
     // When
-    List<Card> cards = obtainCard.getAll();
+    List<Card> cards = obtainCard.getCardsNotBelongToGroup();
     // Then
     assertThat(cards).isEmpty();
   }

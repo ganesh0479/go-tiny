@@ -50,7 +50,7 @@ public class CardControllerTest {
     // Given
     Card card = constructCard();
     List<Card> cards = List.of(constructCard());
-    lenient().when(requestCard.getAll()).thenReturn(cards);
+    lenient().when(requestCard.getCardsNotBelongToGroup()).thenReturn(cards);
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/cards";
     ResponseEntity<GetCards> getCards = this.testRestTemplate.getForEntity(baseUrl, GetCards.class);
@@ -59,7 +59,7 @@ public class CardControllerTest {
     assertThat(getCards.getBody().getCardResponses().get(0))
         .extracting("title", "name")
         .contains(card.getTitle(), card.getName());
-    verify(requestCard).getAll();
+    verify(requestCard).getCardsNotBelongToGroup();
   }
 
   @Test
@@ -67,14 +67,14 @@ public class CardControllerTest {
   public void shouldNotBeAbleToGetAllTheCardWithTheSupportOfStub() {
     // Given
     List<Card> cards = List.of();
-    lenient().when(requestCard.getAll()).thenReturn(cards);
+    lenient().when(requestCard.getCardsNotBelongToGroup()).thenReturn(cards);
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/cards";
     ResponseEntity<GetCards> getCards = this.testRestTemplate.getForEntity(baseUrl, GetCards.class);
     // Then
     assertThat(getCards.getStatusCode()).matches(HttpStatus::is2xxSuccessful);
     assertThat(getCards.getBody()).isNull();
-    verify(requestCard).getAll();
+    verify(requestCard).getCardsNotBelongToGroup();
   }
 
   @Test

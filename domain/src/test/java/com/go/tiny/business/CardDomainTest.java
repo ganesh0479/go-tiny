@@ -141,9 +141,9 @@ public class CardDomainTest {
   void shouldBeAbleToGetAllCardsWithTheSupportOfStub() {
     Card card = constructCard();
     List<Card> cards = List.of(card);
-    lenient().when(obtainCard.getAll()).thenReturn(cards);
+    lenient().when(obtainCard.getCardsNotBelongToGroup()).thenReturn(cards);
     CardDomain cardDomain = new CardDomain(obtainCard);
-    List<Card> fetchedCards = cardDomain.getAll();
+    List<Card> fetchedCards = cardDomain.getCardsNotBelongToGroup();
     assertThat(fetchedCards.get(0))
         .extracting(
             "title", "description", "name", "actualUrl", "expiresIn", "createdBy", "tinyUrl")
@@ -155,7 +155,7 @@ public class CardDomainTest {
             card.getExpiresIn(),
             card.getCreatedBy(),
             card.getTinyUrl());
-    verify(obtainCard).getAll();
+    verify(obtainCard).getCardsNotBelongToGroup();
   }
 
   @Test
@@ -163,7 +163,7 @@ public class CardDomainTest {
       "should throw an exception if right side port is not available while fetching all cards")
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileFetchingAllCards() {
     CardDomain cardDomain = new CardDomain(null);
-    assertThrows(GoTinyDomainException.class, cardDomain::getAll, CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
+    assertThrows(GoTinyDomainException.class, cardDomain::getCardsNotBelongToGroup, CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
