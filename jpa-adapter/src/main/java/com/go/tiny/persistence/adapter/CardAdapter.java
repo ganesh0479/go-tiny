@@ -4,20 +4,19 @@ import com.go.tiny.business.model.Card;
 import com.go.tiny.business.port.ObtainCard;
 import com.go.tiny.persistence.dao.CardDao;
 import com.go.tiny.persistence.dao.CardGroupDao;
+import com.go.tiny.persistence.dao.SequenceDao;
 import com.go.tiny.persistence.entity.CardEntity;
 import com.go.tiny.persistence.entity.CardGroupEntity;
+import com.go.tiny.persistence.entity.SequenceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
 import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.SEQUENCE_NAME;
-
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
 import static com.go.tiny.persistence.mapper.CardMapper.CARD_MAPPER;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
@@ -26,7 +25,7 @@ import static java.util.Optional.empty;
 public class CardAdapter implements ObtainCard {
   private CardDao cardDao;
   private CardGroupDao cardGroupDao;
-  @Autowired private EntityManager entityManager;
+  @Autowired private SequenceDao sequenceDao;
 
   public CardAdapter(CardDao cardDao, CardGroupDao cardGroupDao) {
     this.cardDao = cardDao;
@@ -160,6 +159,6 @@ public class CardAdapter implements ObtainCard {
 
   @Override
   public long getUniqueId() {
-    return entityManager.createNativeQuery(SEQUENCE_NAME).executeUpdate();
+    return sequenceDao.save(SequenceEntity.builder().build()).getId();
   }
 }

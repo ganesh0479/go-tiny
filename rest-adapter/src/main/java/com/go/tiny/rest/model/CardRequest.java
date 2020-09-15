@@ -20,5 +20,5 @@ public class CardRequest {
   private Integer expiresIn;
   private String createdBy;
   private String tinyUrl;
-  private MultipartFile picture;
+  //private MultipartFile picture;
 }

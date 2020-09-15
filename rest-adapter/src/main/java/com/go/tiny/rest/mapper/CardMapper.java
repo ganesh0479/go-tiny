@@ -28,7 +28,7 @@ public enum CardMapper {
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
         .createdBy(cardRequest.getCreatedBy())
-        .picture(convertMultipartFile(cardRequest.getPicture()))
+       // .picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 
@@ -38,7 +38,7 @@ public enum CardMapper {
         .description(cardRequest.getDescription())
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
-        .picture(convertMultipartFile(cardRequest.getPicture()))
+        //.picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 
