@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Status {
   private String status;
+  private Boolean signInSuccess;
 }

@@ -9,4 +9,5 @@ public interface GoTinyDomainExceptionMessage {
       "User group role domain right side port is not available";
   String CARD_RIGHT_SIDE_PORT_UNAVAILABLE = "Card domain right side port is not available";
   String INVALID_URL = "Invalid URL";
+  String INVALID_USER = "User already exist";
 }

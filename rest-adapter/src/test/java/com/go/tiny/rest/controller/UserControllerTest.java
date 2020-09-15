@@ -2,6 +2,7 @@ package com.go.tiny.rest.controller;
 
 import com.go.tiny.business.model.User;
 import com.go.tiny.business.port.RequestUser;
+import com.go.tiny.rest.model.Status;
 import com.go.tiny.rest.model.UserRequest;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -40,14 +41,14 @@ public class UserControllerTest {
   public void shouldBeAbleToRegisterTheUserWithTheSupportOfStub() {
     // Given
     UserRequest userRequest = constructUserRequest();
-    lenient().doNothing().when(requestUser).register(any(User.class));
+    lenient().when(requestUser.register(any(User.class))).thenReturn(true);
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/users";
-    ResponseEntity<HttpStatus> registerResponse =
-        this.testRestTemplate.postForEntity(baseUrl, userRequest, HttpStatus.class);
+    ResponseEntity<Status> registerResponse =
+        this.testRestTemplate.postForEntity(baseUrl, userRequest, Status.class);
     // Then
     assertThat(registerResponse.getStatusCode()).matches(HttpStatus::is2xxSuccessful);
-    assertThat(registerResponse.getBody().is2xxSuccessful());
+    assertThat(registerResponse.getBody().getSignInSuccess()).isTrue();
     verify(requestUser).register(any(User.class));
   }
 
@@ -59,10 +60,10 @@ public class UserControllerTest {
     lenient().when(requestUser.signIn(any(User.class))).thenReturn(Boolean.TRUE);
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/users";
-    Boolean registerResponse =
-        this.getRestTemplateForPatch().patchForObject(baseUrl, userRequest, Boolean.class);
+    Status registerResponse =
+        this.getRestTemplateForPatch().patchForObject(baseUrl, userRequest, Status.class);
     // Then
-    assertThat(registerResponse).isTrue();
+    assertThat(registerResponse.getSignInSuccess()).isTrue();
     verify(requestUser).signIn(any(User.class));
   }
 

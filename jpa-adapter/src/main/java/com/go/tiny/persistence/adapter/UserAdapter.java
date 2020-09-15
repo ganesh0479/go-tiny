@@ -19,12 +19,12 @@ public class UserAdapter implements ObtainUser {
   }
 
   @Override
-  public void register(final User user) {
+  public Boolean register(final User user) {
     if (isNull(user)) {
-      return;
+      return false;
     }
     Optional<UserEntity> userEntity = USER_MAPPER.constructUserEntity(user);
-    userEntity.ifPresent(userEntityToSave -> userDao.save(userEntityToSave));
+    return userEntity.map(userEntityToSave -> userDao.save(userEntityToSave)).isPresent();
   }
 
   @Override
@@ -33,5 +33,13 @@ public class UserAdapter implements ObtainUser {
       return FALSE;
     }
     return userDao.getByEmailIdAndPassword(user.getEmailId(), user.getPassword()).isPresent();
+  }
+
+  @Override
+  public Boolean checkForUserExistence(final String email) {
+    if (isNull(email)) {
+      return false;
+    }
+    return userDao.getByEmailId(email).isPresent();
   }
 }

@@ -14,9 +14,9 @@ public class UserDomain implements RequestUser {
   }
 
   @Override
-  public void register(final User user) {
+  public Boolean register(final User user) {
     USER_HELPER.initialize(obtainUser);
-    USER_HELPER.register(user);
+    return USER_HELPER.register(user);
   }
 
   @Override

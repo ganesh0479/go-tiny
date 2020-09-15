@@ -33,6 +33,7 @@ public class UserJpaAdapterTest {
     obtainUser.register(user);
     // Then
     assertThat(obtainUser.signIn(user));
+    assertThat(obtainUser.checkForUserExistence(user.getEmailId())).isTrue();
   }
 
   @Test
@@ -41,7 +42,7 @@ public class UserJpaAdapterTest {
     // When
     obtainUser.register(null);
     // Then
-    assertThat(userDao.findAll()).isEmpty();
+    assertThat(obtainUser.checkForUserExistence(null)).isFalse();
   }
 
   @Test

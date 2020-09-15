@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UserDao extends CrudRepository<UserEntity, Long> {
   Optional<UserEntity> getByEmailIdAndPassword(final String emailId, final String password);
+
+  Optional<UserEntity> getByEmailId(final String emailId);
 }
