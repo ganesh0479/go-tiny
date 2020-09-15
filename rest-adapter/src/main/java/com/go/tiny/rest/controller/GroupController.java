@@ -5,12 +5,8 @@ import com.go.tiny.business.port.RequestGroup;
 import com.go.tiny.rest.model.GroupRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+
 import static com.go.tiny.rest.constant.GoTinyRestConstants.APPROVED;
 import static com.go.tiny.rest.constant.GoTinyRestConstants.AUTHORIZED;
 import static com.go.tiny.rest.mapper.GroupMapper.GROUP_MAPPER;
@@ -18,6 +14,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/v1/go-tiny/groups")
+@CrossOrigin(origins = "*")
 public class GroupController {
   private RequestGroup requestGroup;
 
