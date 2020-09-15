@@ -15,11 +15,11 @@ public enum GroupHelper {
     this.obtainGroup = obtainGroup;
   }
 
-  public void create(final Group group) {
+  public Boolean create(final Group group) {
     if (isPortNotAvailable()) {
       throw new GoTinyDomainException(GROUP_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
-    obtainGroup.create(group);
+    return obtainGroup.create(group);
   }
 
   public void authorizeCardToDisplayInGroup(final String groupName, final String cardName) {

@@ -1,27 +1,30 @@
 package com.go.tiny.persistence.adapter;
 
+import com.go.tiny.business.constant.Role;
 import com.go.tiny.business.model.Group;
+import com.go.tiny.business.model.UserGroupRole;
 import com.go.tiny.business.port.ObtainGroup;
 import com.go.tiny.persistence.dao.CardDao;
 import com.go.tiny.persistence.dao.CardGroupDao;
 import com.go.tiny.persistence.dao.GroupDao;
+import com.go.tiny.persistence.dao.UserGroupRoleDao;
 import com.go.tiny.persistence.entity.CardGroupEntity;
 import com.go.tiny.persistence.entity.GroupEntity;
+import com.go.tiny.persistence.entity.UserGroupRoleEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.APPROVED;
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.AUTHORIZED;
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
-
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
 import static com.go.tiny.persistence.mapper.GroupMapper.GROUP_MAPPER;
+import static com.go.tiny.persistence.mapper.UserGroupRoleMapper.USER_GROUP_ROLE_MAPPER;
 import static java.util.Objects.isNull;
 
 public class GroupAdapter implements ObtainGroup {
   private GroupDao groupDao;
   private CardGroupDao cardGroupDao;
   private CardDao cardDao;
+  @Autowired private UserGroupRoleDao userGroupRoleDao;
 
   public GroupAdapter(GroupDao groupDao, CardGroupDao cardGroupDao, CardDao cardDao) {
     this.groupDao = groupDao;
@@ -30,12 +33,30 @@ public class GroupAdapter implements ObtainGroup {
   }
 
   @Override
-  public void create(final Group group) {
+  public Boolean create(final Group group) {
     if (isNull(group)) {
-      return;
+      return false;
     }
     Optional<GroupEntity> groupEntity = GROUP_MAPPER.constructGroupEntity(group);
-    groupEntity.ifPresent(groupEntityToSave -> groupDao.save(groupEntityToSave));
+    return groupEntity
+        .map(
+            groupEntityToCreate -> {
+              GroupEntity createdGroupEntity = this.groupDao.save(groupEntityToCreate);
+              Optional<UserGroupRoleEntity> userGroupRoleEntity =
+                  USER_GROUP_ROLE_MAPPER.constructUserGroupRoleEntity(
+                      UserGroupRole.builder()
+                          .groupName(createdGroupEntity.getName())
+                          .role(Role.ADMIN)
+                          .userName(createdGroupEntity.getCreatedBy())
+                          .addedBy(createdGroupEntity.getCreatedBy())
+                          .build());
+              return userGroupRoleEntity
+                  .map(
+                      userGroupRoleEntityToCreate ->
+                          userGroupRoleDao.save(userGroupRoleEntityToCreate))
+                  .isPresent();
+            })
+        .isPresent();
   }
 
   @Override

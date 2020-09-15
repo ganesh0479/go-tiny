@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Status {
-  private String status;
-  private Boolean signInSuccess;
-  private Boolean isGroupCreated;
+public class UserGroupRoleResponse {
+  private List<UserGroupRoleRequest> userGroupRoleRequests;
 }

@@ -3,6 +3,7 @@ package com.go.tiny.rest.controller;
 import com.go.tiny.business.model.Group;
 import com.go.tiny.business.port.RequestGroup;
 import com.go.tiny.rest.model.GroupRequest;
+import com.go.tiny.rest.model.Status;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -36,13 +37,14 @@ public class GroupControllerTest {
   public void shouldBeAbleToCreateCardGroupWithTheSupportOfStub() {
     // Given
     GroupRequest groupRequest = constructGroupRequest();
-    lenient().doNothing().when(requestGroup).create(any(Group.class));
+    lenient().when(requestGroup.create(any(Group.class))).thenReturn(true);
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/groups";
-    ResponseEntity<HttpStatus> createGroupResponse =
-        this.testRestTemplate.postForEntity(baseUrl, groupRequest, HttpStatus.class);
+    ResponseEntity<Status> createGroupResponse =
+        this.testRestTemplate.postForEntity(baseUrl, groupRequest, Status.class);
     // Then
     assertThat(createGroupResponse.getStatusCode()).matches(HttpStatus::is2xxSuccessful);
+    assertThat(createGroupResponse.getBody().getIsGroupCreated()).isTrue();
     verify(requestGroup).create(any(Group.class));
   }
 

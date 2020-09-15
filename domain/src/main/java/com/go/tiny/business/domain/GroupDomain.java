@@ -14,9 +14,9 @@ public class GroupDomain implements RequestGroup {
   }
 
   @Override
-  public void create(final Group group) {
+  public Boolean create(final Group group) {
     GROUP_HELPER.initialize(obtainGroup);
-    GROUP_HELPER.create(group);
+    return GROUP_HELPER.create(group);
   }
 
   @Override

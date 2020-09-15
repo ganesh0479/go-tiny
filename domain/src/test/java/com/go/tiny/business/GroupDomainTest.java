@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.GROUP_RIGHT_SIDE_PORT_UNAVAILABLE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
@@ -24,18 +25,24 @@ public class GroupDomainTest {
   @Test
   @DisplayName("should be able to create group with the support of stub")
   void shouldBeAbleToCreateGroupWithTheSupportOfStub() {
+    // Given
     Group group = constructGroup();
-    lenient().doNothing().when(obtainGroup).create(group);
+    lenient().when(obtainGroup.create(group)).thenReturn(true);
     GroupDomain groupDomain = new GroupDomain(obtainGroup);
-    groupDomain.create(group);
+    // when
+    Boolean isGroupCreated = groupDomain.create(group);
+    // Then
+    assertThat(isGroupCreated).isTrue();
     verify(obtainGroup).create(group);
   }
 
   @Test
   @DisplayName("should throw an exception if right side port is not available while creating group")
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileCreatingGroup() {
+    // Given
     Group group = constructGroup();
     GroupDomain groupDomain = new GroupDomain(null);
+    // When and Then
     assertThrows(
         GoTinyDomainException.class,
         () -> groupDomain.create(group),
@@ -45,9 +52,12 @@ public class GroupDomainTest {
   @Test
   @DisplayName("should be able to authorize card to display in group with the support of stub")
   void shouldBeAbleToAuthorizeCardToDisplayInGroupWithTheSupportOfStub() {
+    // Given
     lenient().doNothing().when(obtainGroup).authorizeCardToDisplayInGroup(groupName, cardName);
     GroupDomain groupDomain = new GroupDomain(obtainGroup);
+    // When
     groupDomain.authorizeCardToDisplayInGroup(groupName, cardName);
+    // Then
     verify(obtainGroup).authorizeCardToDisplayInGroup(groupName, cardName);
   }
 
@@ -55,7 +65,9 @@ public class GroupDomainTest {
   @DisplayName(
       "should throw an exception if right side port is not available while authorizing card in group")
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileAuthorizingCardInGroup() {
+    // Given
     GroupDomain groupDomain = new GroupDomain(null);
+    // When and Then
     assertThrows(
         GoTinyDomainException.class,
         () -> groupDomain.authorizeCardToDisplayInGroup(groupName, cardName),
@@ -65,9 +77,12 @@ public class GroupDomainTest {
   @Test
   @DisplayName("should be able to approve card to display in group with the support of stub")
   void shouldBeAbleToApproveCardToDisplayInGroupWithTheSupportOfStub() {
+    // Given
     lenient().doNothing().when(obtainGroup).authorizeCardToDisplayInGroup(groupName, cardName);
     GroupDomain groupDomain = new GroupDomain(obtainGroup);
+    // When
     groupDomain.approveCardChangesInTheGroup(groupName, cardName);
+    // Then
     verify(obtainGroup).approveCardChangesInTheGroup(groupName, cardName);
   }
 
@@ -75,7 +90,9 @@ public class GroupDomainTest {
   @DisplayName(
       "should throw an exception if right side port is not available while approve card in group")
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileApproveCardInGroup() {
+    // Given
     GroupDomain groupDomain = new GroupDomain(null);
+    // When and Then
     assertThrows(
         GoTinyDomainException.class,
         () -> groupDomain.approveCardChangesInTheGroup(groupName, cardName),
