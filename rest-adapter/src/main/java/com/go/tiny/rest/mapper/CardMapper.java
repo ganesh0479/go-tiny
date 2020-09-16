@@ -8,11 +8,16 @@ import com.go.tiny.rest.model.GetCardResponse;
 import com.go.tiny.rest.model.GetCards;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
-import static com.go.tiny.rest.constant.GoTinyRestConstants.CANT_READ_MULTIPART_FILE;
+import static com.go.tiny.rest.constant.GoTinyRestConstants.UNABLE_TO_LOAD_AVATAR;
+import static com.go.tiny.rest.constant.GoTinyRestConstants.UNABLE_TO_RETRIEVE_AVATAR;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -28,7 +33,6 @@ public enum CardMapper {
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
         .createdBy(cardRequest.getCreatedBy())
-        // .picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 
@@ -39,7 +43,6 @@ public enum CardMapper {
         .description(cardRequest.getDescription())
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
-        // .picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 
@@ -52,7 +55,7 @@ public enum CardMapper {
             .tinyUrl(card.getTinyUrl())
             .expiresIn(card.getExpiresIn())
             .createdBy(card.getCreatedBy())
-            .picture(card.getPicture())
+            .picture(decompressBytes(card.getPicture()))
             .build()
         : null;
   }
@@ -79,7 +82,47 @@ public enum CardMapper {
     try {
       return multipartFile.getBytes();
     } catch (IOException ioException) {
-      throw new GoTinyDomainException(CANT_READ_MULTIPART_FILE);
+      throw new GoTinyDomainException(UNABLE_TO_LOAD_AVATAR);
     }
+  }
+
+  public byte[] compressBytes(final MultipartFile file) {
+    ByteArrayOutputStream outputStream = null;
+    try {
+      byte[] data = file.getBytes();
+      Deflater deflater = new Deflater();
+      deflater.setInput(data);
+      deflater.finish();
+      outputStream = new ByteArrayOutputStream(data.length);
+      byte[] buffer = new byte[1024];
+      while (!deflater.finished()) {
+        int count = deflater.deflate(buffer);
+        outputStream.write(buffer, 0, count);
+      }
+      outputStream.close();
+    } catch (IOException e) {
+      throw new GoTinyDomainException(UNABLE_TO_LOAD_AVATAR);
+    }
+    return outputStream.toByteArray();
+  }
+
+  public static byte[] decompressBytes(byte[] data) {
+    if(isNull(data)){
+      return null;
+    }
+    Inflater inflater = new Inflater();
+    inflater.setInput(data);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+    byte[] buffer = new byte[1024];
+    try {
+      while (!inflater.finished()) {
+        int count = inflater.inflate(buffer);
+        outputStream.write(buffer, 0, count);
+      }
+      outputStream.close();
+    } catch (IOException | DataFormatException ioe) {
+      throw new GoTinyDomainException(UNABLE_TO_RETRIEVE_AVATAR);
+    }
+    return outputStream.toByteArray();
   }
 }

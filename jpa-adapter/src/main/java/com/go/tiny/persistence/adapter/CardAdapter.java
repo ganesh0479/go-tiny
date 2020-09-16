@@ -175,4 +175,16 @@ public class CardAdapter implements ObtainCard {
   public long getUniqueId() {
     return sequenceDao.save(SequenceEntity.builder().build()).getId();
   }
+
+  @Override
+  public String uploadAvatar(final byte[] fileData, final String cardName) {
+    if (isNull(fileData) || isNull(cardName)) {
+      return "Unable to upload image";
+    }
+    Optional<CardEntity> cardEntity = cardDao.getByName(cardName);
+    cardEntity.ifPresent(
+        cardEntityToUpdate ->
+            cardDao.save(cardEntityToUpdate.toBuilder().picture(fileData).build()));
+    return AVATAR_UPLOADED;
+  }
 }

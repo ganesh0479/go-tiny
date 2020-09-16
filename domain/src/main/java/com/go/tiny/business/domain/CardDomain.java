@@ -46,6 +46,12 @@ public class CardDomain implements RequestCard {
   }
 
   @Override
+  public String uploadAvatar(final byte[] fileData, final String cardName) {
+    CARD_HELPER.initialize(obtainCard);
+    return CARD_HELPER.uploadAvatar(fileData, cardName);
+  }
+
+  @Override
   public List<Card> getCardsBelongToGroup(final String groupName) {
     CARD_HELPER.initialize(obtainCard);
     return CARD_HELPER.getCardsBelongToGroup(groupName);

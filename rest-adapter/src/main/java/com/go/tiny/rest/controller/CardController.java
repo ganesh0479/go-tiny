@@ -2,14 +2,11 @@ package com.go.tiny.rest.controller;
 
 import com.go.tiny.business.model.Card;
 import com.go.tiny.business.port.RequestCard;
-import com.go.tiny.rest.model.CardRequest;
-import com.go.tiny.rest.model.CreateCardResponse;
-import com.go.tiny.rest.model.GetCardResponse;
-import com.go.tiny.rest.model.GetCards;
-import com.go.tiny.rest.model.Status;
+import com.go.tiny.rest.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -86,5 +83,13 @@ public class CardController {
       @PathVariable final String cardName, @PathVariable final String groupName) {
     Card constructedCard = Card.builder().name(cardName).build();
     return ResponseEntity.ok(requestCard.deleteCardInTheGroup(constructedCard, groupName));
+  }
+
+  @PostMapping("{cardName}/avatar")
+  public ResponseEntity<Status> uploadImage(
+      @PathVariable String cardName, @RequestParam("imageFile") MultipartFile imageFile) {
+    byte[] fileData = CARD_MAPPER.compressBytes(imageFile);
+    return ResponseEntity.ok(
+        Status.builder().status(this.requestCard.uploadAvatar(fileData, cardName)).build());
   }
 }

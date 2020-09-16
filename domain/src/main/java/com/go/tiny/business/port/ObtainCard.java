@@ -27,4 +27,6 @@ public interface ObtainCard {
   String getActualUrl(final String tinyUrl);
 
   long getUniqueId();
+
+  String uploadAvatar(final byte[] fileData, final String cardName);
 }

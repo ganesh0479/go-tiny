@@ -7,12 +7,7 @@ import com.go.tiny.business.port.ObtainCard;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ONE;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.BASE_62;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ZERO_STR;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.ZERO;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.EMPTY;
-import static com.go.tiny.business.constant.GoTinyDomainConstant.BASE_DIGITS;
+import static com.go.tiny.business.constant.GoTinyDomainConstant.*;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
 import static java.util.Objects.isNull;
@@ -123,5 +118,12 @@ public enum CardHelper {
       decimalNumber = decimalNumber / base;
     }
     return shortUrl;
+  }
+
+  public String uploadAvatar(final byte[] fileData, final String cardName) {
+    if (isPortNotAvailable()) {
+      throw new GoTinyDomainException(CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
+    }
+    return obtainCard.uploadAvatar(fileData, cardName);
   }
 }

@@ -1,7 +1,8 @@
 package com.go.tiny.rest.constant;
 
 public interface GoTinyRestConstants {
-  String CANT_READ_MULTIPART_FILE = "Unable to load picture";
+  String UNABLE_TO_LOAD_AVATAR = "Unable to load avatar";
+  String UNABLE_TO_RETRIEVE_AVATAR = "Unable to retrieve avatar";
   String AUTHORIZED = "AUTHORIZED";
   String APPROVED = "APPROVED";
   String CARD_HEADER =
