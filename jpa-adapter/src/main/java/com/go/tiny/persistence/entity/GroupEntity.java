@@ -24,7 +24,7 @@ public class GroupEntity {
   @Column(name = "ID")
   private Long id;
 
-  @Column(name = "NAME")
+  @Column(name = "NAME",unique = true)
   private String name;
 
   @Column(name = "CREATED_BY")

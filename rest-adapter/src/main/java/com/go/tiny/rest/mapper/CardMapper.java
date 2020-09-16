@@ -28,17 +28,18 @@ public enum CardMapper {
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
         .createdBy(cardRequest.getCreatedBy())
-       // .picture(convertMultipartFile(cardRequest.getPicture()))
+        // .picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 
   public Card constructCardRequestToUpdate(final CardRequest cardRequest) {
     return Card.builder()
         .title(cardRequest.getTitle())
+        .name(cardRequest.getName())
         .description(cardRequest.getDescription())
         .actualUrl(cardRequest.getActualUrl())
         .expiresIn(cardRequest.getExpiresIn())
-        //.picture(convertMultipartFile(cardRequest.getPicture()))
+        // .picture(convertMultipartFile(cardRequest.getPicture()))
         .build();
   }
 

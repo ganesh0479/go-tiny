@@ -30,7 +30,7 @@ public class CardEntity {
   @Column(name = "DESCRIPTION")
   private String description;
 
-  @Column(name = "NAME")
+  @Column(name = "NAME",unique = true)
   private String name;
 
   @Column(name = "ACTUAL_URL")

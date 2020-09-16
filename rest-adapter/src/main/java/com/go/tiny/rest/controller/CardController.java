@@ -66,7 +66,7 @@ public class CardController {
 
   @GetMapping("{status}/groups/{groupName}")
   public ResponseEntity<GetCards> getCardsBelongToGroupByStatus(
-      @PathVariable final String groupName, @PathVariable final String status) {
+      @PathVariable final String status, @PathVariable final String groupName) {
     List<Card> cards = requestCard.getCardsBelongToGroupByStatus(groupName, status);
     return ResponseEntity.ok(CARD_MAPPER.constructGetCards(cards));
   }

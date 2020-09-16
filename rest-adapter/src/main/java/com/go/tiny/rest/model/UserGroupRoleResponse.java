@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserGroupRoleResponse {
-  private List<UserGroupRoleRequest> userGroupRoleRequests;
+  private List<UserGroupRoleRequest> userGroupRolesResponse;
 }

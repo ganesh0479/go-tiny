@@ -10,13 +10,13 @@ import com.go.tiny.persistence.entity.CardGroupEntity;
 import com.go.tiny.persistence.entity.SequenceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.DELETE_PENDING;
-import static com.go.tiny.persistence.constant.GoTinyJpaConstant.UPDATE_PENDING;
+import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
 import static com.go.tiny.persistence.mapper.CardMapper.CARD_MAPPER;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.isNull;
@@ -59,6 +59,7 @@ public class CardAdapter implements ObtainCard {
   }
 
   @Override
+  @Transactional
   public void delete(final String name) {
     if (isNull(name)) {
       return;
@@ -97,7 +98,12 @@ public class CardAdapter implements ObtainCard {
     }
     List<CardGroupEntity> cardGroupEntities = cardGroupDao.getByGroupName(groupName);
     List<String> cardNames =
-        cardGroupEntities.stream().map(CardGroupEntity::getCardName).collect(Collectors.toList());
+        cardGroupEntities.stream()
+            .filter(cardGroupEntity -> !UPDATE_PENDING.equals(cardGroupEntity.getStatus()))
+            .filter(cardGroupEntity -> !DELETE_PENDING.equals(cardGroupEntity.getStatus()))
+            .filter(cardGroupEntity -> !APPROVED.equals(cardGroupEntity.getStatus()))
+            .map(CardGroupEntity::getCardName)
+            .collect(Collectors.toList());
     List<CardEntity> cardEntities = cardDao.getAllByNameIn(cardNames);
     return CARD_MAPPER.constructCards(cardEntities);
   }

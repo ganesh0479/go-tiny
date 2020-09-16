@@ -37,7 +37,7 @@ public class UserGroupRoleController {
     List<UserGroupRole> userGroupRoles = requestUserGroupRole.getGroups(userName);
     return ResponseEntity.ok(
         UserGroupRoleResponse.builder()
-            .userGroupRoleRequests(
+            .userGroupRolesResponse(
                 USER_GROUP_ROLE_MAPPER.constructUSerGroupRolesResponse(userGroupRoles))
             .build());
   }
