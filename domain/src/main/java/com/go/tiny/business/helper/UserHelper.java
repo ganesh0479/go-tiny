@@ -4,6 +4,8 @@ import com.go.tiny.business.exception.GoTinyDomainException;
 import com.go.tiny.business.model.User;
 import com.go.tiny.business.port.ObtainUser;
 
+import java.util.List;
+
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_USER;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.USER_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static java.util.Objects.isNull;
@@ -31,6 +33,13 @@ public enum UserHelper {
       throw new GoTinyDomainException(USER_RIGHT_SIDE_PORT_UNAVAILABLE);
     }
     return this.obtainUser.signIn(user);
+  }
+
+  public List<User> getAll() {
+    if (isPortNotAvailable()) {
+      throw new GoTinyDomainException(USER_RIGHT_SIDE_PORT_UNAVAILABLE);
+    }
+    return this.obtainUser.getAll();
   }
 
   private Boolean isPortNotAvailable() {

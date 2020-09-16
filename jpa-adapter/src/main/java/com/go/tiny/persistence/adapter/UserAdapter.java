@@ -5,7 +5,10 @@ import com.go.tiny.business.port.ObtainUser;
 import com.go.tiny.persistence.dao.UserDao;
 import com.go.tiny.persistence.entity.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.go.tiny.persistence.mapper.UserMapper.USER_MAPPER;
 import static java.lang.Boolean.FALSE;
@@ -41,5 +44,12 @@ public class UserAdapter implements ObtainUser {
       return false;
     }
     return userDao.getByEmailId(email).isPresent();
+  }
+
+  @Override
+  public List<User> getAll() {
+    List<UserEntity> userEntities =
+        StreamSupport.stream(userDao.findAll().spliterator(), false).collect(Collectors.toList());
+    return USER_MAPPER.constructUsers(userEntities);
   }
 }

@@ -172,7 +172,7 @@ public class CardJpaAdapterTest {
     CardEntity cardEntity = constructCardEntity();
     cardDao.save(cardEntity);
     CardGroupEntity cardGroupEntity =
-        constructCardGroupEntity(cardEntity.getName(), groupName, "UPDATE_PENDING");
+        constructCardGroupEntity(cardEntity.getName(), groupName, "AUTHORIZED");
     cardGroupDao.save(cardGroupEntity);
     // When
     List<Card> cards = obtainCard.getCardsBelongToGroup(groupName);
