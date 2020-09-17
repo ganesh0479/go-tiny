@@ -1,22 +1,8 @@
 package com.go.tiny.persistence;
 
-import com.go.tiny.business.port.ObtainGroup;
-import com.go.tiny.business.port.ObtainCard;
-import com.go.tiny.business.port.ObtainCardGroup;
-import com.go.tiny.business.port.ObtainUser;
-import com.go.tiny.business.port.ObtainUserGroupRole;
-
-import com.go.tiny.persistence.adapter.CardGroupAdapter;
-import com.go.tiny.persistence.adapter.CardAdapter;
-import com.go.tiny.persistence.adapter.GroupAdapter;
-import com.go.tiny.persistence.adapter.UserAdapter;
-import com.go.tiny.persistence.adapter.UserGroupRoleAdapter;
-
-import com.go.tiny.persistence.dao.CardDao;
-import com.go.tiny.persistence.dao.CardGroupDao;
-import com.go.tiny.persistence.dao.UserDao;
-import com.go.tiny.persistence.dao.UserGroupRoleDao;
-import com.go.tiny.persistence.dao.GroupDao;
+import com.go.tiny.business.port.*;
+import com.go.tiny.persistence.adapter.*;
+import com.go.tiny.persistence.dao.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +11,9 @@ import org.springframework.context.annotation.Bean;
 public class GoTinyJpaTestConfiguration {
   @Bean
   @Qualifier("test-card-adapter")
-  public ObtainCard getTestCardJpaAdapter(final CardDao cardDao, final CardGroupDao cardGroupDao) {
-    return new CardAdapter(cardDao, cardGroupDao);
+  public ObtainCard getTestCardJpaAdapter(
+      final CardDao cardDao, final CardGroupDao cardGroupDao, final SequenceDao sequenceDao) {
+    return new CardAdapter(cardDao, cardGroupDao, sequenceDao);
   }
 
   @Bean
@@ -38,8 +25,11 @@ public class GoTinyJpaTestConfiguration {
   @Bean
   @Qualifier("test-group-adapter")
   public ObtainGroup getGroupJpaAdapter(
-      final GroupDao groupDao, final CardGroupDao cardGroupDao, final CardDao cardDao) {
-    return new GroupAdapter(groupDao, cardGroupDao, cardDao);
+      final GroupDao groupDao,
+      final CardGroupDao cardGroupDao,
+      final CardDao cardDao,
+      final UserGroupRoleDao userGroupRoleDao) {
+    return new GroupAdapter(groupDao, cardGroupDao, cardDao, userGroupRoleDao);
   }
 
   @Bean

@@ -1,17 +1,9 @@
 package com.go.tiny.persistence.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Builder(toBuilder = true)
 @Getter
@@ -37,4 +29,16 @@ public class CardGroupEntity {
 
   @Column(name = "ADDED_BY")
   private String addedBy;
+
+  @Column(name = "TINY_URL")
+  private String tinyUrl;
+
+  @Column(name = "ACTUAL_URL")
+  private String actualUrl;
+
+  @Column(name = "EXPIRES_IN")
+  private Integer expiresIn;
+
+  @Column(name = "CREATED_TIME")
+  private LocalDateTime createdTime;
 }

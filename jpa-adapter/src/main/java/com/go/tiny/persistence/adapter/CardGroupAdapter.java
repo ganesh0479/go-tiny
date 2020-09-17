@@ -26,4 +26,14 @@ public class CardGroupAdapter implements ObtainCardGroup {
         CARD_GROUP_MAPPER.constructCardGroupEntity(cardGroup);
     cardGroupEntity.ifPresent(cardGroupEntityToSave -> cardGroupDao.save(cardGroupEntityToSave));
   }
+
+  @Override
+  public Optional<CardGroup> getActualUrl(final String groupName, final String tinyUrl) {
+    if (isNull(groupName) || isNull(tinyUrl)) {
+      return Optional.empty();
+    }
+    Optional<CardGroupEntity> cardGroupEntity =
+        this.cardGroupDao.getByGroupNameAndCardName(groupName, tinyUrl);
+    return cardGroupEntity.map(CARD_GROUP_MAPPER::constructCardGroup).orElse(null);
+  }
 }

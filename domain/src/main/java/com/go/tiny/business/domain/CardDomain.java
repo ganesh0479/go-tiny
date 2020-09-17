@@ -74,10 +74,4 @@ public class CardDomain implements RequestCard {
     CARD_HELPER.initialize(obtainCard);
     return CARD_HELPER.deleteCardInTheGroup(card, groupName);
   }
-
-  @Override
-  public String getActualUrl(final String tinyUrl) {
-    CARD_HELPER.initialize(obtainCard);
-    return CARD_HELPER.getActualUrl(tinyUrl);
-  }
 }

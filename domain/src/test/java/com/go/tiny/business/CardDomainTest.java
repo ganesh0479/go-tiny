@@ -10,13 +10,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.CARD_RIGHT_SIDE_PORT_UNAVAILABLE;
 import static com.go.tiny.business.exception.GoTinyDomainExceptionMessage.INVALID_URL;
 import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 
@@ -98,7 +102,53 @@ public class CardDomainTest {
     Card cardWithTinyUrl = constructCard();
     card.setTinyUrl(TINY_URL);
     lenient().when(obtainCard.create(card)).thenReturn(of(cardWithTinyUrl));
-    lenient().when(obtainCard.getUniqueId()).thenReturn(100000L);
+    lenient().when(obtainCard.getUniqueId()).thenReturn(System.currentTimeMillis());
+    lenient().when(obtainCard.checkTinyUrlAlreadyExist(anyString(), any())).thenReturn(false);
+    CardDomain cardDomain = new CardDomain(obtainCard);
+    Card createCardResponse = cardDomain.create(card);
+    assertThat(createCardResponse.getTinyUrl()).matches(TINY_URL);
+    verify(obtainCard).getUniqueId();
+    verify(obtainCard).create(card);
+  }
+
+  @Test
+  @DisplayName("should be able to create card on existing tiny url with the support of stub")
+  void shouldBeAbleToCreateCardOnExistingTinyUrlWithTheSupportOfStub() {
+    Card card = constructCard();
+    card.setTinyUrl(null);
+    Card cardWithTinyUrl = constructCard();
+    card.setTinyUrl(TINY_URL);
+    Set<String> shortUrls = new HashSet<>();
+    shortUrls.add("abcdefg");
+    lenient().when(obtainCard.create(card)).thenReturn(of(cardWithTinyUrl));
+    lenient().when(obtainCard.getUniqueId()).thenReturn(System.currentTimeMillis());
+    lenient().when(obtainCard.checkTinyUrlAlreadyExist(anyString(), any())).thenReturn(true);
+    lenient()
+        .when(this.obtainCard.getAvailableShortURLsByFilteringExistingUrls(any(), any(Set.class)))
+        .thenReturn(shortUrls);
+    CardDomain cardDomain = new CardDomain(obtainCard);
+    Card createCardResponse = cardDomain.create(card);
+    assertThat(createCardResponse.getTinyUrl()).matches(TINY_URL);
+    verify(obtainCard).getUniqueId();
+    verify(obtainCard).create(card);
+  }
+
+  @Test
+  @DisplayName(
+      "should be able to create card with smaller unique id tiny url with the support of stub")
+  void shouldBeAbleToCreateCardWithSmallerUniqueIdWithTheSupportOfStub() {
+    Card card = constructCard();
+    card.setTinyUrl(null);
+    Card cardWithTinyUrl = constructCard();
+    card.setTinyUrl(TINY_URL);
+    Set<String> shortUrls = new HashSet<>();
+    shortUrls.add("abcdefg");
+    lenient().when(obtainCard.create(card)).thenReturn(of(cardWithTinyUrl));
+    lenient().when(obtainCard.getUniqueId()).thenReturn(1L);
+    lenient().when(obtainCard.checkTinyUrlAlreadyExist(anyString(), any())).thenReturn(true);
+    lenient()
+        .when(this.obtainCard.getAvailableShortURLsByFilteringExistingUrls(any(), any(Set.class)))
+        .thenReturn(shortUrls);
     CardDomain cardDomain = new CardDomain(obtainCard);
     Card createCardResponse = cardDomain.create(card);
     assertThat(createCardResponse.getTinyUrl()).matches(TINY_URL);
@@ -163,7 +213,10 @@ public class CardDomainTest {
       "should throw an exception if right side port is not available while fetching all cards")
   void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileFetchingAllCards() {
     CardDomain cardDomain = new CardDomain(null);
-    assertThrows(GoTinyDomainException.class, cardDomain::getCardsNotBelongToGroup, CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
+    assertThrows(
+        GoTinyDomainException.class,
+        cardDomain::getCardsNotBelongToGroup,
+        CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 
   @Test
@@ -278,27 +331,6 @@ public class CardDomainTest {
     assertThrows(
         GoTinyDomainException.class,
         () -> cardDomain.deleteCardInTheGroup(card, GROUP_NAME),
-        CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
-  }
-
-  @Test
-  @DisplayName("should be able to get actual url with the support of stub")
-  void shouldBeAbleToGetActualUrlWithTheSupportOfStub() {
-    lenient().when(obtainCard.getActualUrl(TINY_URL)).thenReturn(ACTUAL_URL);
-    CardDomain cardDomain = new CardDomain(obtainCard);
-    String actualUrl = cardDomain.getActualUrl(TINY_URL);
-    assertThat(actualUrl).matches(ACTUAL_URL);
-    verify(obtainCard).getActualUrl(TINY_URL);
-  }
-
-  @Test
-  @DisplayName(
-      "should throw an exception if right side port is not available while getting actual url")
-  void shouldThrowAnExceptionIfRightSidePortIsNotAvailableWhileGettingActualUrl() {
-    CardDomain cardDomain = new CardDomain(null);
-    assertThrows(
-        GoTinyDomainException.class,
-        () -> cardDomain.getActualUrl(TINY_URL),
         CARD_RIGHT_SIDE_PORT_UNAVAILABLE);
   }
 

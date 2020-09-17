@@ -6,4 +6,5 @@ public interface GoTinyJpaConstant {
   String APPROVED = "APPROVED";
   String AUTHORIZED = "AUTHORIZED";
   String AVATAR_UPLOADED = "Avatar Uploaded";
+  String TINY = "tiny";
 }

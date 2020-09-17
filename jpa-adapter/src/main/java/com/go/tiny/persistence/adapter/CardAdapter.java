@@ -1,6 +1,7 @@
 package com.go.tiny.persistence.adapter;
 
 import com.go.tiny.business.model.Card;
+import com.go.tiny.business.model.CardGroup;
 import com.go.tiny.business.port.ObtainCard;
 import com.go.tiny.persistence.dao.CardDao;
 import com.go.tiny.persistence.dao.CardGroupDao;
@@ -8,28 +9,32 @@ import com.go.tiny.persistence.dao.SequenceDao;
 import com.go.tiny.persistence.entity.CardEntity;
 import com.go.tiny.persistence.entity.CardGroupEntity;
 import com.go.tiny.persistence.entity.SequenceEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.go.tiny.persistence.constant.GoTinyJpaConstant.*;
+import static com.go.tiny.persistence.mapper.CardGroupMapper.CARD_GROUP_MAPPER;
 import static com.go.tiny.persistence.mapper.CardMapper.CARD_MAPPER;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static java.util.Objects.isNull;
 import static java.util.Optional.empty;
 
 public class CardAdapter implements ObtainCard {
   private CardDao cardDao;
   private CardGroupDao cardGroupDao;
-  @Autowired private SequenceDao sequenceDao;
+  private SequenceDao sequenceDao;
 
-  public CardAdapter(CardDao cardDao, CardGroupDao cardGroupDao) {
+  public CardAdapter(CardDao cardDao, CardGroupDao cardGroupDao, SequenceDao sequenceDao) {
     this.cardDao = cardDao;
     this.cardGroupDao = cardGroupDao;
+    this.sequenceDao = sequenceDao;
   }
 
   @Override
@@ -42,6 +47,14 @@ public class CardAdapter implements ObtainCard {
         .map(
             cardEntityToSave -> {
               CardEntity responseCardEntity = cardDao.save(cardEntityToSave);
+              CARD_GROUP_MAPPER
+                  .constructCardGroupEntity(
+                      CardGroup.builder()
+                          .cardName(responseCardEntity.getName())
+                          .groupName(TINY)
+                          .expiresIn(responseCardEntity.getExpiresIn())
+                          .build())
+                  .ifPresent(cardGroupEntity -> cardGroupDao.save(cardGroupEntity));
               return CARD_MAPPER.constructCard(responseCardEntity);
             })
         .orElse(empty());
@@ -80,10 +93,12 @@ public class CardAdapter implements ObtainCard {
   public List<Card> getCardsNotBelongToGroup() {
     List<CardEntity> cardEntities =
         StreamSupport.stream(cardDao.findAll().spliterator(), false).collect(Collectors.toList());
-    List<String> cardGroupEntities =
+    List<CardGroupEntity> cardGroupEntityList =
         StreamSupport.stream(cardGroupDao.findAll().spliterator(), false)
-            .map(CardGroupEntity::getCardName)
+            .map(this::filterExpiredCards)
             .collect(Collectors.toList());
+    List<String> cardGroupEntities =
+        cardGroupEntityList.stream().map(CardGroupEntity::getCardName).collect(Collectors.toList());
     List<CardEntity> filteredCards =
         cardEntities.stream()
             .filter(cardEntity -> !cardGroupEntities.contains(cardEntity.getName()))
@@ -163,15 +178,6 @@ public class CardAdapter implements ObtainCard {
   }
 
   @Override
-  public String getActualUrl(final String tinyUrl) {
-    if (isNull(tinyUrl)) {
-      return null;
-    }
-    Optional<CardEntity> cardEntity = cardDao.getByTinyUrl(tinyUrl);
-    return cardEntity.map(CardEntity::getActualUrl).orElse(null);
-  }
-
-  @Override
   public long getUniqueId() {
     return sequenceDao.save(SequenceEntity.builder().build()).getId();
   }
@@ -186,5 +192,39 @@ public class CardAdapter implements ObtainCard {
         cardEntityToUpdate ->
             cardDao.save(cardEntityToUpdate.toBuilder().picture(fileData).build()));
     return AVATAR_UPLOADED;
+  }
+
+  @Override
+  public Set<String> getAvailableShortURLsByFilteringExistingUrls(
+      final String groupName, final Set<String> generatedShortUrls) {
+    return this.cardGroupDao.getByGroupNameAndTinyUrlNotIn(groupName, generatedShortUrls).stream()
+        .map(CardGroupEntity::getTinyUrl)
+        .collect(Collectors.toSet());
+  }
+
+  @Override
+  public Set<String> getAvailableShortUrls(final String groupName, final String tinyUrl) {
+    if (isNull(groupName) || isNull(tinyUrl)) {
+      return emptySet();
+    }
+    return this.cardGroupDao.getByGroupNameAndTinyUrl(groupName, tinyUrl).stream()
+        .map(CardGroupEntity::getTinyUrl)
+        .collect(Collectors.toSet());
+  }
+
+  @Override
+  public Boolean checkTinyUrlAlreadyExist(final String groupName, final String tinyUrl) {
+    if (isNull(groupName) || isNull(tinyUrl)) {
+      return false;
+    }
+    return this.cardGroupDao.existsByGroupNameAndTinyUrl(groupName, tinyUrl);
+  }
+
+  private CardGroupEntity filterExpiredCards(final CardGroupEntity cardGroupEntity) {
+    LocalDateTime createdOn = cardGroupEntity.getCreatedTime();
+    LocalDateTime currentTime = LocalDateTime.now();
+    return currentTime.isBefore(createdOn.plusMinutes(cardGroupEntity.getExpiresIn()))
+        ? cardGroupEntity
+        : null;
   }
 }

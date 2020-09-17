@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @NoArgsConstructor
@@ -13,4 +15,7 @@ public class CardGroup {
   private String cardName;
   private String groupName;
   private String addedBy;
+  private Integer expiresIn;
+  private String actualUrl;
+  private LocalDateTime createdTime;
 }

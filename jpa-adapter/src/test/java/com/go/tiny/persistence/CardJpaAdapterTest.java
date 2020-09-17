@@ -378,27 +378,6 @@ public class CardJpaAdapterTest {
     assertThat(approvalStatus).isNull();
   }
 
-  @Test
-  @DisplayName("should be able to get actual url with the support of database")
-  public void shouldBeAbleToGetActualUrlWithTheSupportOfDatabase() {
-    // Given
-    CardEntity cardEntity = constructCardEntity();
-    cardDao.save(cardEntity);
-    // When
-    String actualUrl = obtainCard.getActualUrl(cardEntity.getTinyUrl());
-    // Then
-    assertThat(actualUrl).matches(cardEntity.getActualUrl());
-  }
-
-  @Test
-  @DisplayName("should not get actual url on unknown tiny url with the support of database")
-  public void shouldNotGetActualUrlOnUnknownTinyUrlWithTheSupportOfDatabase() {
-    // When
-    String actualUrl = obtainCard.getActualUrl(null);
-    // Then
-    assertThat(actualUrl).isNull();
-  }
-
   private CardEntity constructCardEntity() {
     return CardEntity.builder()
         .name("TINY")

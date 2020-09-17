@@ -292,21 +292,6 @@ public class CardControllerTest {
     verify(requestCard).updateCardInTheGroup(any(Card.class), anyString());
   }
 
-  @Test
-  @DisplayName("should be able to give actual url to redirect with the support of stub")
-  public void shouldBeAbleToGiveActualUrlToRedirectWithTheSupportOfStub() {
-    // Given
-    String actualUrl = "ACTUAL-URL";
-    lenient().when(requestCard.getActualUrl(anyString())).thenReturn(actualUrl);
-    // When
-    String baseUrl = "http://localhost:" + randomServerPort + "/go.tiny/groupName/CardName";
-    ResponseEntity responseEntity =
-        this.testRestTemplate.getForEntity(baseUrl, ResponseEntity.class);
-    // Then
-    assertThat(responseEntity.getStatusCode()).matches(HttpStatus::is3xxRedirection);
-    verify(requestCard).getActualUrl(anyString());
-  }
-
   private Card constructCard() {
     return Card.builder()
         .title("TINY-CARD")

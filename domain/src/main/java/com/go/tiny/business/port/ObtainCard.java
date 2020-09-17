@@ -4,6 +4,7 @@ import com.go.tiny.business.model.Card;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ObtainCard {
   Optional<Card> create(final Card card);
@@ -24,9 +25,14 @@ public interface ObtainCard {
 
   String deleteCardInTheGroup(final Card card, final String groupName);
 
-  String getActualUrl(final String tinyUrl);
-
   long getUniqueId();
 
   String uploadAvatar(final byte[] fileData, final String cardName);
+
+  Boolean checkTinyUrlAlreadyExist(final String groupName, String tinyUrl);
+
+  Set<String> getAvailableShortUrls(final String groupName, String tinyUrl);
+
+  Set<String> getAvailableShortURLsByFilteringExistingUrls(
+      final String groupName, final Set<String> generatedShortUrls);
 }

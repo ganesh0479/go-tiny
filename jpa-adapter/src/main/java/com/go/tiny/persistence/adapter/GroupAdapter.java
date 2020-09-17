@@ -11,7 +11,6 @@ import com.go.tiny.persistence.dao.UserGroupRoleDao;
 import com.go.tiny.persistence.entity.CardGroupEntity;
 import com.go.tiny.persistence.entity.GroupEntity;
 import com.go.tiny.persistence.entity.UserGroupRoleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -24,12 +23,17 @@ public class GroupAdapter implements ObtainGroup {
   private GroupDao groupDao;
   private CardGroupDao cardGroupDao;
   private CardDao cardDao;
-  @Autowired private UserGroupRoleDao userGroupRoleDao;
+  private UserGroupRoleDao userGroupRoleDao;
 
-  public GroupAdapter(GroupDao groupDao, CardGroupDao cardGroupDao, CardDao cardDao) {
+  public GroupAdapter(
+      GroupDao groupDao,
+      CardGroupDao cardGroupDao,
+      CardDao cardDao,
+      UserGroupRoleDao userGroupRoleDao) {
     this.groupDao = groupDao;
     this.cardGroupDao = cardGroupDao;
     this.cardDao = cardDao;
+    this.userGroupRoleDao = userGroupRoleDao;
   }
 
   @Override

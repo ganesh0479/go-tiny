@@ -23,7 +23,5 @@ public interface RequestCard {
 
   String deleteCardInTheGroup(final Card card, final String groupName);
 
-  String getActualUrl(final String tinyUrl);
-
   String uploadAvatar(final byte[] fileData, final String cardName);
 }
