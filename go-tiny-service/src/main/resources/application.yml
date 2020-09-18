@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://$AZ_DATABASE_NAME:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: $AZ_DATABASE_NAME
+    username: $AZ_DB_USER_NAME
     password: $AZ_POSTGRESQL_PASSWORD
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
