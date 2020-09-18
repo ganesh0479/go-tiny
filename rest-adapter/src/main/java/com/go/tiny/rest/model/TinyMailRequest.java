@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TinyMailRequest {
-  private String title;
-  private String description;
-  private String tinyUrl;
+  @NotBlank private String title;
+  @NotBlank private String description;
+  @NotBlank private String tinyUrl;
 }

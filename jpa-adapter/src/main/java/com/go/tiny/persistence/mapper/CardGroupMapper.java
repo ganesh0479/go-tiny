@@ -18,6 +18,7 @@ public enum CardGroupMapper {
             .groupName(cardGroup.getGroupName())
             .expiresIn(cardGroup.getExpiresIn())
             .actualUrl(cardGroup.getActualUrl())
+            .tinyUrl(cardGroup.getTinyUrl())
             .createdTime(LocalDateTime.now())
             .addedBy(cardGroup.getAddedBy())
             .build());

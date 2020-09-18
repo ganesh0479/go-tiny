@@ -144,18 +144,6 @@ public class CardJpaAdapterTest {
   }
 
   @Test
-  @DisplayName("should be able to get all the cards with the support of database")
-  public void shouldBeAbleToGetAllTheCardsWithTheSupportOfDatabase() {
-    // Given
-    CardEntity cardEntity = constructCardEntity();
-    cardDao.save(cardEntity);
-    // When
-    List<Card> cards = obtainCard.getCardsNotBelongToGroup();
-    // Then
-    assertThat(cards).isNotEmpty();
-  }
-
-  @Test
   @DisplayName("should be able to get zero cards with the support of database")
   public void shouldBeAbleToGetZeroCardsWithTheSupportOfDatabase() {
     // When

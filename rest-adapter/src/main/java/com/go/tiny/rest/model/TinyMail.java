@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Builder
@@ -12,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TinyMail {
-  private List<TinyMailRequest> mailRequests;
-  private String to;
-  private String from;
+  @NotEmpty private List<TinyMailRequest> mailRequests;
+  @NotBlank private String to;
+  @NotBlank private String from;
 }

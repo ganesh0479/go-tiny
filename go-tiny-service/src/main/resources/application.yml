@@ -19,3 +19,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      enabled: true
+go:
+  tiny:
+    server: $GO_TINY_HOST

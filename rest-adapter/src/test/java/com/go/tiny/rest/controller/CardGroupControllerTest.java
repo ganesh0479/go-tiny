@@ -3,6 +3,7 @@ package com.go.tiny.rest.controller;
 import com.go.tiny.business.model.CardGroup;
 import com.go.tiny.business.port.RequestCardGroup;
 import com.go.tiny.rest.model.CardGroupRequest;
+import com.go.tiny.rest.model.Status;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -36,8 +37,8 @@ public class CardGroupControllerTest {
     lenient().doNothing().when(requestCardGroup).add(any(CardGroup.class));
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/card-group";
-    ResponseEntity<HttpStatus> createCardResponse =
-        this.testRestTemplate.postForEntity(baseUrl, cardGroupRequest, HttpStatus.class);
+    ResponseEntity<Status> createCardResponse =
+        this.testRestTemplate.postForEntity(baseUrl, cardGroupRequest, Status.class);
     // Then
     assertThat(createCardResponse.getStatusCode()).matches(HttpStatus::is2xxSuccessful);
     verify(requestCardGroup).add(any(CardGroup.class));

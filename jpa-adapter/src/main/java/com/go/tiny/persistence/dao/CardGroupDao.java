@@ -19,7 +19,9 @@ public interface CardGroupDao extends CrudRepository<CardGroupEntity, Long> {
 
   Boolean existsByGroupNameAndTinyUrl(final String groupName, final String tinyUrl);
 
-  List<CardGroupEntity> getByGroupNameAndTinyUrl(final String groupName, final String tinyUrl);
+  List<CardGroupEntity> getByGroupNameAndTinyUrlLike(final String groupName, final String tinyUrl);
+
+  Optional<CardGroupEntity> getByGroupNameAndTinyUrl(final String groupName, final String tinyUrl);
 
   List<CardGroupEntity> getByGroupNameAndTinyUrlNotIn(
       final String groupName, final Set<String> tinyUrls);

@@ -1,11 +1,9 @@
 package com.go.tiny.rest.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Builder
 @Getter
@@ -13,12 +11,15 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CardRequest {
-  private String title;
+  @NotBlank private String title;
   private String description;
+
+  @NotBlank
+  @Size(min = 0, max = 10)
   private String name;
-  private String actualUrl;
+
+  @NotBlank private String actualUrl;
   private Integer expiresIn;
   private String createdBy;
   private String tinyUrl;
-  //private MultipartFile picture;
 }

@@ -52,6 +52,8 @@ public class CardAdapter implements ObtainCard {
                       CardGroup.builder()
                           .cardName(responseCardEntity.getName())
                           .groupName(TINY)
+                          .tinyUrl(responseCardEntity.getTinyUrl())
+                          .actualUrl(responseCardEntity.getActualUrl())
                           .expiresIn(responseCardEntity.getExpiresIn())
                           .build())
                   .ifPresent(cardGroupEntity -> cardGroupDao.save(cardGroupEntity));
@@ -93,15 +95,12 @@ public class CardAdapter implements ObtainCard {
   public List<Card> getCardsNotBelongToGroup() {
     List<CardEntity> cardEntities =
         StreamSupport.stream(cardDao.findAll().spliterator(), false).collect(Collectors.toList());
-    List<CardGroupEntity> cardGroupEntityList =
-        StreamSupport.stream(cardGroupDao.findAll().spliterator(), false)
-            .map(this::filterExpiredCards)
-            .collect(Collectors.toList());
+    List<CardGroupEntity> cardGroupEntityList = cardGroupDao.getByGroupName("tiny");
     List<String> cardGroupEntities =
         cardGroupEntityList.stream().map(CardGroupEntity::getCardName).collect(Collectors.toList());
     List<CardEntity> filteredCards =
         cardEntities.stream()
-            .filter(cardEntity -> !cardGroupEntities.contains(cardEntity.getName()))
+            .filter(cardEntity -> cardGroupEntities.contains(cardEntity.getName()))
             .collect(Collectors.toList());
     return CARD_MAPPER.constructCards(filteredCards);
   }
@@ -207,7 +206,7 @@ public class CardAdapter implements ObtainCard {
     if (isNull(groupName) || isNull(tinyUrl)) {
       return emptySet();
     }
-    return this.cardGroupDao.getByGroupNameAndTinyUrl(groupName, tinyUrl).stream()
+    return this.cardGroupDao.getByGroupNameAndTinyUrlLike(groupName, tinyUrl).stream()
         .map(CardGroupEntity::getTinyUrl)
         .collect(Collectors.toSet());
   }

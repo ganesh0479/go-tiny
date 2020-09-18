@@ -17,5 +17,6 @@ public class CardGroup {
   private String addedBy;
   private Integer expiresIn;
   private String actualUrl;
+  private String tinyUrl;
   private LocalDateTime createdTime;
 }

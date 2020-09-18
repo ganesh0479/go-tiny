@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "T_CARD_GROUP")
+@Table(
+    name = "T_CARD_GROUP",
+    indexes = {@Index(name = "t_card_group_index", columnList = "CARD_NAME,GROUP_NAME")})
 public class CardGroupEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

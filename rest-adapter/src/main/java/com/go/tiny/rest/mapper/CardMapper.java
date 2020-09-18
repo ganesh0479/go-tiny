@@ -46,13 +46,13 @@ public enum CardMapper {
         .build();
   }
 
-  public GetCardResponse constructGetCardResponse(final Card card) {
+  public GetCardResponse constructGetCardResponse(final Card card, final String serverAddress) {
     return nonNull(card)
         ? GetCardResponse.builder()
             .name(card.getName())
             .title(card.getTitle())
             .description(card.getDescription())
-            .tinyUrl(card.getTinyUrl())
+            .tinyUrl(serverAddress + "/go/tiny/" + card.getTinyUrl())
             .expiresIn(card.getExpiresIn())
             .createdBy(card.getCreatedBy())
             .picture(decompressBytes(card.getPicture()))
@@ -60,12 +60,14 @@ public enum CardMapper {
         : null;
   }
 
-  public GetCards constructGetCards(final List<Card> cards) {
+  public GetCards constructGetCards(final List<Card> cards, final String serverAddress) {
     return isEmpty(cards)
         ? null
         : GetCards.builder()
             .cardResponses(
-                cards.stream().map(this::constructGetCardResponse).collect(Collectors.toList()))
+                cards.stream()
+                    .map(card -> this.constructGetCardResponse(card, serverAddress))
+                    .collect(Collectors.toList()))
             .build();
   }
 
@@ -73,17 +75,6 @@ public enum CardMapper {
     return nonNull(card)
         ? CreateCardResponse.builder().cardName(card.getName()).tinyUrl(card.getTinyUrl()).build()
         : null;
-  }
-
-  private byte[] convertMultipartFile(final MultipartFile multipartFile) {
-    if (isNull(multipartFile)) {
-      return null;
-    }
-    try {
-      return multipartFile.getBytes();
-    } catch (IOException ioException) {
-      throw new GoTinyDomainException(UNABLE_TO_LOAD_AVATAR);
-    }
   }
 
   public byte[] compressBytes(final MultipartFile file) {
@@ -107,7 +98,7 @@ public enum CardMapper {
   }
 
   public static byte[] decompressBytes(byte[] data) {
-    if(isNull(data)){
+    if (isNull(data)) {
       return null;
     }
     Inflater inflater = new Inflater();

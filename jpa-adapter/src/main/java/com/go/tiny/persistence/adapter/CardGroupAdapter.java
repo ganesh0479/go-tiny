@@ -33,7 +33,7 @@ public class CardGroupAdapter implements ObtainCardGroup {
       return Optional.empty();
     }
     Optional<CardGroupEntity> cardGroupEntity =
-        this.cardGroupDao.getByGroupNameAndCardName(groupName, tinyUrl);
+        this.cardGroupDao.getByGroupNameAndTinyUrl(groupName, tinyUrl);
     return cardGroupEntity.map(CARD_GROUP_MAPPER::constructCardGroup).orElse(null);
   }
 }

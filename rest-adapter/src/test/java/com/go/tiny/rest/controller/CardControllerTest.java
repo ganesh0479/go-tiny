@@ -103,10 +103,10 @@ public class CardControllerTest {
     lenient().doNothing().when(requestCard).update(any(Card.class));
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/cards";
-    HttpStatus responseEntity =
-        this.getRestTemplateForPatch().patchForObject(baseUrl, cardRequest, HttpStatus.class);
+    Status responseEntity =
+        this.getRestTemplateForPatch().patchForObject(baseUrl, cardRequest, Status.class);
     // Then
-    assertThat(responseEntity.is2xxSuccessful());
+    assertThat(responseEntity);
     verify(requestCard).update(any(Card.class));
   }
 
@@ -119,10 +119,10 @@ public class CardControllerTest {
     // When
     String baseUrl =
         "http://localhost:" + randomServerPort + "/api/v1/go-tiny/cards" + "/" + cardName;
-    ResponseEntity<HttpStatus> responseEntity =
-        this.testRestTemplate.exchange(baseUrl, HttpMethod.DELETE, null, HttpStatus.class);
+    ResponseEntity<Status> responseEntity =
+        this.testRestTemplate.exchange(baseUrl, HttpMethod.DELETE, null, Status.class);
     // Then
-    assertThat(responseEntity.getBody()).matches(HttpStatus::is2xxSuccessful);
+    assertThat(responseEntity.getBody());
     verify(requestCard).delete(cardName);
   }
 
@@ -265,11 +265,11 @@ public class CardControllerTest {
             + cardName
             + "/groups/"
             + groupName;
-    ResponseEntity<String> responseEntity =
-        this.testRestTemplate.exchange(baseUrl, HttpMethod.DELETE, null, String.class);
+    ResponseEntity<Status> responseEntity =
+        this.testRestTemplate.exchange(baseUrl, HttpMethod.DELETE, null, Status.class);
     // Then
     assertThat(responseEntity.getStatusCode()).matches(HttpStatus::is2xxSuccessful);
-    assertThat(responseEntity.getBody()).matches(status);
+    assertThat(responseEntity.getBody().getStatus()).matches(status);
     verify(requestCard).deleteCardInTheGroup(any(Card.class), any(String.class));
   }
 

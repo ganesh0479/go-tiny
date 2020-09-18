@@ -21,7 +21,7 @@ public enum CardHelper {
   CARD_HELPER;
   private ObtainCard obtainCard;
   private static final String URL_REGEX =
-      "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/){1}[a-zA-Z0-9!#&'()*-/:=?_,]+";
+      "^(http:\\/\\/www\\.|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/|www.){1}[a-zA-Z0-9!#&'()*-/:=?_,]+";
   private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
   private static final String GROUP_TINY = "tiny";
   private static final String MACHINE_IP = "121.0.0.1";
@@ -43,13 +43,7 @@ public enum CardHelper {
     String uniqueShortUrl = constructUniqueShortUrl(BASE_62, uniqueId);
     Set<String> shortUrls = new HashSet<>();
     shortUrls.add(uniqueShortUrl);
-    card.setTinyUrl(
-        PROTOCOL
-            + MACHINE_IP
-            + SLASH
-            + GROUP_TINY
-            + SLASH
-            + buildShortUrl(shortUrls, GROUP_TINY, new HashSet<>(), uniqueShortUrl));
+    card.setTinyUrl(buildShortUrl(shortUrls, GROUP_TINY, new HashSet<>(), uniqueShortUrl));
     return obtainCard.create(card).orElse(null);
   }
 

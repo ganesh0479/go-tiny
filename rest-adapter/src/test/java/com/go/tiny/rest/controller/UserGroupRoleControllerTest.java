@@ -2,6 +2,7 @@ package com.go.tiny.rest.controller;
 
 import com.go.tiny.business.model.UserGroupRole;
 import com.go.tiny.business.port.RequestUserGroupRole;
+import com.go.tiny.rest.model.Status;
 import com.go.tiny.rest.model.UserGroupRoleRequest;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -40,11 +41,10 @@ public class UserGroupRoleControllerTest {
     lenient().doNothing().when(requestUserGroupRole).updateUserGroupRole(any(UserGroupRole.class));
     // When
     String baseUrl = "http://localhost:" + randomServerPort + "/api/v1/go-tiny/user-group-role";
-    HttpStatus registerResponse =
-        this.getRestTemplateForPatch()
-            .patchForObject(baseUrl, userGroupRoleRequest, HttpStatus.class);
+    Status registerResponse =
+        this.getRestTemplateForPatch().patchForObject(baseUrl, userGroupRoleRequest, Status.class);
     // Then
-    assertThat(registerResponse.is2xxSuccessful());
+    assertThat(registerResponse);
     verify(requestUserGroupRole).updateUserGroupRole(any(UserGroupRole.class));
   }
 
